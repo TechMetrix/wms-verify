@@ -1,0 +1,1360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>WMS Verify — Online Verification System</title>
+<meta name="description" content="Prototype / Demonstration System for online verification of weighing and measuring instruments." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@500;600;700&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#09243d;--navy2:#0e3658;--blue:#145da0;--blue2:#1e73be;--ink:#122033;--muted:#66758a;--line:#dbe3ec;--bg:#f4f7fa;--white:#fff;--saffron:#e59a27;--green:#16845b;--danger:#bd3b42;--shadow:0 18px 50px rgba(13,39,66,.10);--shadow2:0 8px 24px rgba(13,39,66,.08);--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"DM Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.hidden{display:none!important}
+/* NEW: skip-link + language switcher (utility bar + header dropdown) */
+.gov-top-strip a,.gov-top-strip button.txt-link{color:#fff;text-decoration:none;background:none;border:0;padding:0;margin:0;font:inherit;cursor:pointer}
+.gov-top-strip a:hover,.gov-top-strip button.txt-link:hover{text-decoration:underline}
+.gov-top-strip a:focus-visible,.gov-top-strip button.txt-link:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:2px}
+.lang-dd{position:relative}
+.lang-dd-menu{display:none;position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow2);min-width:130px;z-index:60;overflow:hidden}
+.lang-dd-menu.show{display:block}
+.lang-dd-menu button{display:block;width:100%;text-align:left;padding:9px 13px;border:0;background:#fff;color:var(--ink);font-size:13px}
+.lang-dd-menu button:hover{background:#eef4f8;color:var(--navy)}
+.lang-dd-menu button.active{font-weight:700;color:var(--blue)}
+body:before{content:"";position:fixed;z-index:-1;inset:0;background:linear-gradient(180deg,#f7f9fb 0%,#eef3f7 100%)}
+.topline{height:4px;background:linear-gradient(90deg,#e77922 0 33.33%,#fff 33.33% 66.66%,#16845b 66.66%)}
+.header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(219,227,236,.9);transition:.35s var(--ease)}.header.scrolled{box-shadow:0 8px 28px rgba(8,31,53,.08)}.nav{max-width:1440px;margin:auto;padding:17px 30px;display:flex;align-items:center;gap:30px}.brand{display:flex;align-items:center;gap:12px;min-width:300px}.emblem{width:48px;height:56px;border:1.5px solid #c3a45b;border-radius:7px;display:grid;place-items:center;color:#a37d27;background:#fffaf0;font-weight:800;font-size:20px;box-shadow:inset 0 0 0 4px #fffdf6}.brand b{font-family:Manrope;font-size:14px;color:var(--navy);display:block}.brand span{font-size:12px;color:var(--muted);display:block;margin-top:2px}.navlinks{display:flex;gap:6px;align-items:center;flex:1;justify-content:center}.navlinks button,.nav-actions button{border:0;background:transparent;color:#3e4c5d;padding:10px 11px;border-radius:8px;font-size:13px}.navlinks button:hover,.nav-actions button:hover{background:#eef4f8;color:var(--navy)}.nav-actions{display:flex;align-items:center;gap:6px}.officer{border:1px solid #bfcbd8!important;background:#fff!important;color:var(--navy)!important}.officer:hover{border-color:var(--blue)!important}.mobile-menu{display:none}
+.container{max-width:1440px;margin:auto;padding:0 30px}.hero{padding:74px 0 58px;overflow:hidden;position:relative}.hero:after{content:"";position:absolute;right:-180px;top:-130px;width:580px;height:580px;border:1px solid rgba(20,93,160,.10);border-radius:50%;box-shadow:0 0 0 60px rgba(20,93,160,.025),0 0 0 120px rgba(20,93,160,.018);pointer-events:none}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(22,132,91,.10)}h1{font-family:Manrope;font-size:clamp(42px,5vw,72px);line-height:1.02;letter-spacing:-.045em;margin:18px 0;color:var(--navy)}.hero p{font-size:18px;max-width:700px;color:#607084;margin:0 0 28px}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:8px;padding:13px 17px;font-weight:700;font-size:13px;transition:.22s var(--ease);display:inline-flex;align-items:center;gap:9px}.btn:hover{transform:translateY(-2px)}.primary{background:var(--navy);color:white;box-shadow:0 8px 18px rgba(9,36,61,.18)}.secondary{background:white;color:var(--navy);border:1px solid #c9d4df}.success{background:#eaf7f1;color:#08754d;border:1px solid #b9e2d0}.demo{font-size:11px;color:#788799;margin-top:16px}.hero-visual{position:relative;min-height:450px}.security-card{position:absolute;inset:30px 20px 20px 45px;background:#fff;border:1px solid #dce5ed;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.security-head{padding:17px 20px;border-bottom:1px solid #e8edf2;display:flex;justify-content:space-between;align-items:center}.secure-title{font-weight:800;font-size:13px}.live{font-size:11px;color:var(--green);display:flex;gap:6px;align-items:center}.live i{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 0 5px #e8f6f0}.cert{margin:24px;border:1px solid #d9e1e9;background:#fcfdfe;padding:20px;position:relative}.cert:after{content:"PROTOTYPE";position:absolute;inset:45% 0 auto;text-align:center;font:800 42px Manrope;color:rgba(20,93,160,.035);transform:rotate(-15deg)}.cert-top{display:flex;justify-content:space-between;align-items:center}.seal{width:48px;height:48px;border:1px solid #c4a24e;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#9a7524}.cert h3{font:800 16px Manrope;color:var(--navy);margin:18px 0 4px}.cert small{color:#758396}.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.kv{padding:11px;background:#f4f7fa;border:1px solid #e4eaf0}.kv small{display:block;color:#7b8898;font-size:10px}.kv b{font-size:12px}.qr{position:absolute;right:20px;bottom:20px;width:88px;height:88px;border:8px solid white;box-shadow:0 0 0 1px #d8e0e8;background:repeating-linear-gradient(45deg,#122033 0 3px,#fff 3px 6px)}.scan{position:absolute;left:0;right:0;top:45%;height:2px;background:#22a776;box-shadow:0 0 14px #22a776;animation:scan 2.8s infinite var(--ease)}@keyframes scan{0%,100%{top:25%}50%{top:76%}}.float{position:absolute;background:#fff;border:1px solid #dce5ed;box-shadow:var(--shadow2);border-radius:10px;padding:11px 13px;display:flex;gap:9px;align-items:center;font-size:11px;font-weight:700}.f1{left:0;top:25px}.f2{right:0;top:160px}.f3{left:15px;bottom:18px}.check{width:28px;height:28px;border-radius:8px;background:#eaf7f1;color:#16845b;display:grid;place-items:center}
+.section{padding:64px 0}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:26px}.section-head h2{font:800 30px Manrope;letter-spacing:-.03em;margin:0;color:var(--navy)}.section-head p{margin:6px 0 0;color:var(--muted);max-width:670px;font-size:14px}.rule{height:1px;background:#dbe3ec;margin-bottom:26px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.service{background:white;border:1px solid var(--line);padding:22px;border-radius:12px;min-height:175px;transition:.3s var(--ease);position:relative;overflow:hidden}.service:before{content:"";position:absolute;left:0;top:0;width:3px;height:0;background:var(--blue);transition:.35s var(--ease)}.service:hover{transform:translateY(-5px);box-shadow:var(--shadow2);border-color:#c6d4e0}.service:hover:before{height:100%}.icon{width:38px;height:38px;border-radius:9px;background:#edf4fa;color:var(--blue);display:grid;place-items:center;font-weight:800;margin-bottom:15px}.service h3{font:800 15px Manrope;margin:0 0 7px;color:var(--navy)}.service p{font-size:12px;color:var(--muted);margin:0}
+.status{background:#fff;border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden;box-shadow:0 4px 16px rgba(13,39,66,.04)}.status-item{padding:18px 20px;border-right:1px solid #e4eaf0}.status-item:last-child{border-right:0}.status-label{font-size:11px;color:#7b8796;margin-bottom:6px}.status-value{font-weight:800;font-size:14px;display:flex;align-items:center;gap:8px}.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px #eaf7f1}.dot.blue{background:var(--blue);box-shadow:0 0 0 4px #edf4fa}
+.steps{display:grid;grid-template-columns:repeat(7,1fr);gap:0;border-top:1px solid #d5dee7}.step{position:relative;padding:24px 10px 10px}.step:before{content:"";position:absolute;top:-7px;left:12px;width:12px;height:12px;border-radius:50%;background:white;border:3px solid var(--blue)}.step .num{font-size:10px;color:var(--blue);font-weight:800}.step h4{font:800 13px Manrope;margin:8px 0 0;color:var(--navy)}.step p{font-size:11px;color:var(--muted);margin:4px 0}.step:not(:last-child):after{content:"→";position:absolute;right:-5px;top:24px;color:#aab7c5;font-weight:700}
+.verify-wrap{background:var(--navy);border-radius:16px;padding:42px;color:#fff;position:relative;overflow:hidden}.verify-wrap:after{content:"";position:absolute;right:-100px;top:-140px;width:420px;height:420px;border:1px solid rgba(255,255,255,.08);border-radius:50%;box-shadow:0 0 0 50px rgba(255,255,255,.02)}.verify-grid{display:grid;grid-template-columns:1fr .75fr;gap:50px;align-items:center}.verify-wrap h2{font:800 32px Manrope;margin:0 0 10px}.verify-wrap p{color:#b9c8d7;font-size:14px}.searchbar{display:flex;background:white;border-radius:9px;padding:5px;margin-top:20px;max-width:650px}.searchbar input{flex:1;border:0;outline:0;padding:13px;font-size:14px;color:var(--ink)}.searchbar button{border:0;background:var(--blue2);color:white;border-radius:7px;padding:0 19px;font-weight:800}.verify-side{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:20px}.verify-side h4{margin:0 0 10px;font:800 13px Manrope}.verify-side div{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.09);padding:10px 0;font-size:11px}.verify-side span{color:#aebdcb}.verified{margin-top:18px;background:#eaf7f1;color:#075f43;border-radius:10px;padding:14px;display:flex;gap:12px;align-items:center}.verified strong{display:block}.verified small{color:#437761}
+.footer{background:#071c2e;color:#bdc9d5;margin-top:30px}.footer-main{max-width:1440px;margin:auto;padding:44px 30px;display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:35px}.footer h4{color:#fff;font:800 13px Manrope;margin:0 0 13px}.footer p,.footer a{font-size:12px;color:#91a1b1;display:block;margin:6px 0}.footer-bottom{border-top:1px solid rgba(255,255,255,.09);padding:15px 30px;text-align:center;font-size:10px;color:#7d8d9d}.prototype{display:inline-block;margin-top:13px;border:1px solid rgba(229,154,39,.4);color:#e9b45d;padding:6px 8px;border-radius:5px;font-size:10px}
+.modal{position:fixed;inset:0;background:rgba(3,18,31,.58);backdrop-filter:blur(5px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-card{width:min(900px,100%);max-height:90vh;overflow:auto;background:white;border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.25);animation:up .35s var(--ease)}@keyframes up{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}.modal-head{padding:20px 22px;border-bottom:1px solid #e1e8ee;display:flex;justify-content:space-between;align-items:center}.modal-head h3{font:800 18px Manrope;margin:0;color:var(--navy)}.close{border:0;background:#eef3f7;width:32px;height:32px;border-radius:7px}.modal-body{padding:22px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field label{font-size:11px;font-weight:800;color:#536174;display:block;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid #ced9e4;border-radius:7px;padding:11px;outline:0;background:white}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(20,93,160,.10)}.span2{grid-column:span 2}.steps-form{display:flex;gap:0;margin-bottom:25px}.sf{flex:1;border-bottom:2px solid #dbe3ec;padding-bottom:9px;font-size:10px;color:#7d8a9a}.sf.active{border-color:var(--blue);color:var(--blue);font-weight:800}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}.upload{border:1.5px dashed #b8c8d7;border-radius:10px;padding:28px;text-align:center;background:#f8fafc}.upload strong{font-size:13px}.upload p{font-size:11px;color:var(--muted);margin:5px 0}.success-state{text-align:center;padding:44px}.success-icon{width:76px;height:76px;border-radius:50%;background:#e8f7f0;color:var(--green);display:grid;place-items:center;font-size:40px;margin:0 auto 18px;animation:pop .55s var(--ease)}@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}.regno{font:800 23px Manrope;color:var(--navy);letter-spacing:.04em;margin:9px 0}.toast{position:fixed;right:22px;bottom:22px;z-index:200;background:#0c243a;color:white;padding:13px 16px;border-radius:9px;box-shadow:0 16px 35px rgba(0,0,0,.2);font-size:12px;display:none}.toast.show{display:block;animation:toast .35s var(--ease)}@keyframes toast{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+.dashboard{display:none}.dash-shell{display:grid;grid-template-columns:230px 1fr;min-height:780px}.sidebar{background:#071f33;color:#c8d4df;padding:18px 12px}.side-brand{padding:10px 12px 22px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:13px}.side-brand b{color:#fff;font:800 13px Manrope}.side-brand small{display:block;color:#8195a7;font-size:10px;margin-top:3px}.side-link{width:100%;border:0;background:transparent;color:#a9b9c8;text-align:left;padding:11px 12px;border-radius:7px;font-size:12px;margin:2px 0}.side-link.active,.side-link:hover{background:rgba(255,255,255,.08);color:#fff}.dash-main{background:#f4f7fa;padding:26px}.dash-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.dash-top h2{font:800 26px Manrope;color:var(--navy);margin:0}.profile{display:flex;align-items:center;gap:10px}.avatar{width:34px;height:34px;border-radius:50%;background:#dfeaf3;display:grid;place-items:center;color:var(--navy);font-weight:800}.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.kpi{background:white;border:1px solid var(--line);border-radius:10px;padding:16px}.kpi label{font-size:10px;color:#7b8795}.kpi strong{display:block;font:800 25px Manrope;color:var(--navy);margin-top:5px}.delta{font-size:10px;color:var(--green);margin-top:4px}.chart-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-top:12px}.panel{background:white;border:1px solid var(--line);border-radius:10px;padding:17px}.panel h3{font:800 13px Manrope;color:var(--navy);margin:0 0 15px}.bars{display:flex;align-items:end;height:155px;gap:10px;padding:10px 5px;border-bottom:1px solid #dfe6ed}.bar{flex:1;background:#dcebf6;border-radius:4px 4px 0 0;min-height:20px;position:relative}.bar b{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:#6b7b8e}.legend{display:flex;gap:15px;font-size:10px;color:#6e7d8d;margin-top:10px}.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--blue);margin-right:4px}.table-wrap{margin-top:12px;overflow:auto}.data-table{width:100%;border-collapse:collapse;font-size:11px}.data-table th{text-align:left;background:#f5f8fa;color:#6d7c8c;padding:11px;border-bottom:1px solid #dce4eb;font-weight:800}.data-table td{padding:12px 11px;border-bottom:1px solid #e9eef3;white-space:nowrap}.data-table tr:hover{background:#f8fafc}.pill{display:inline-block;padding:4px 7px;border-radius:20px;font-size:9px;font-weight:800}.pill.green{background:#eaf7f1;color:#08734e}.pill.orange{background:#fff4df;color:#9a6510}.pill.red{background:#fbecee;color:#a5333b}.row-action{border:0;background:#edf4fa;color:var(--blue);padding:6px 8px;border-radius:6px;font-size:10px;font-weight:800}
+.drawer{position:fixed;inset:0;background:rgba(3,18,31,.35);z-index:110;display:none}.drawer.show{display:block}.drawer-card{position:absolute;right:0;top:0;bottom:0;width:min(560px,100%);background:#fff;box-shadow:-20px 0 55px rgba(0,0,0,.18);animation:slide .35s var(--ease);overflow:auto}@keyframes slide{from{transform:translateX(100%)}to{transform:none}}.drawer-head{padding:20px;border-bottom:1px solid #e2e8ee;display:flex;justify-content:space-between}.drawer-head h3{font:800 17px Manrope;margin:0;color:var(--navy)}.detail{padding:20px}.detail-section{margin-bottom:22px}.detail-section h4{font:800 11px Manrope;color:#667587;text-transform:uppercase;letter-spacing:.08em}.detail-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid #e2e8ee;border-radius:8px;overflow:hidden}.detail-grid div{padding:10px;border-bottom:1px solid #e8edf1}.detail-grid div:nth-child(odd){background:#f8fafc;color:#6d7a89;font-size:10px}.detail-grid div:nth-child(even){font-size:11px;font-weight:700}.timeline{border-left:2px solid #dce5ec;margin-left:7px}.tl{position:relative;padding:0 0 16px 18px;font-size:11px}.tl:before{content:"";position:absolute;left:-7px;top:2px;width:10px;height:10px;border-radius:50%;background:white;border:2px solid var(--blue)}.tl small{display:block;color:#8390a0;margin-top:2px}.risk{background:#fff8e9;border:1px solid #f1dfb6;padding:12px;border-radius:8px;font-size:11px}.risk strong{color:#956313}.risk.low{background:#eef9f4;border-color:#c5e5d6}.risk.low strong{color:#08734e}
+@media(max-width:1100px){.navlinks{display:none}.mobile-menu{display:block;border:0;background:#eef4f8;padding:9px;border-radius:7px}.nav{justify-content:space-between}.hero-grid{grid-template-columns:1fr}.hero-visual{min-height:420px}.cards{grid-template-columns:repeat(2,1fr)}.kpis{grid-template-columns:repeat(3,1fr)}.chart-grid{grid-template-columns:1fr}.dash-shell{grid-template-columns:1fr}.sidebar{display:none}.steps{grid-template-columns:repeat(4,1fr)}}
+.qr-cta{margin-top:14px;display:flex;gap:9px;flex-wrap:wrap}.qr-help{font-size:10px;color:#91a4b7;margin-top:9px}.scanner-card{max-width:780px}.instruction-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.instruction{border:1px solid #dfe7ee;border-radius:10px;padding:15px;background:#fbfcfd}.instruction .stepnum{width:28px;height:28px;border-radius:8px;background:#edf4fa;color:var(--blue);display:grid;place-items:center;font-weight:800;font-size:11px;margin-bottom:9px}.instruction h4{font:800 12px Manrope;margin:0 0 5px;color:var(--navy)}.instruction p{font-size:10px;color:var(--muted);margin:0}.scanner-stage{position:relative;background:#071c2e;border-radius:14px;overflow:hidden;min-height:390px;display:grid;place-items:center}.scanner-stage video{width:100%;height:390px;object-fit:cover;background:#071c2e}.scan-frame{position:absolute;width:min(300px,70%);height:min(300px,70%);border:2px solid rgba(255,255,255,.9);border-radius:18px;box-shadow:0 0 0 999px rgba(3,18,31,.38)}.scan-frame:before,.scan-frame:after{content:"";position:absolute;width:32px;height:32px;border-color:#47c797}.scan-frame:before{left:-2px;top:-2px;border-left:4px solid;border-top:4px solid;border-radius:14px 0 0 0}.scan-frame:after{right:-2px;bottom:-2px;border-right:4px solid;border-bottom:4px solid;border-radius:0 0 14px 0}.scanner-line{position:absolute;left:8%;right:8%;top:50%;height:2px;background:#39d19b;box-shadow:0 0 18px #39d19b;animation:scannerLine 2.1s infinite var(--ease)}@keyframes scannerLine{0%,100%{transform:translateY(-110px)}50%{transform:translateY(110px)}}.scanner-status{position:absolute;bottom:15px;left:15px;right:15px;background:rgba(7,28,46,.78);backdrop-filter:blur(8px);color:white;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px;font-size:11px;display:flex;justify-content:space-between;gap:12px}.public-record{margin-top:18px;background:white;border:1px solid #dfe7ee;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(13,39,66,.07);color:var(--ink)}.record-head{padding:16px 18px;background:#f6faf8;border-bottom:1px solid #dcece4;display:flex;justify-content:space-between;align-items:center;gap:15px}.record-head h3{font:800 16px Manrope;margin:0;color:var(--navy)}.record-head small{color:#668073}.record-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#e5ebef}.record-cell{background:#fff;padding:13px 15px}.record-cell small{display:block;color:#7b8897;font-size:9px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}.record-cell b{font-size:12px}.verified-badge{background:#eaf7f1;color:#08754d;border:1px solid #b9e2d0;padding:7px 10px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap}.privacy-note{padding:12px 15px;background:#f7f9fb;border-top:1px solid #e5ebef;color:#687789;font-size:10px}.manual-demo{margin-top:12px;border:1px dashed #b9c9d8;background:#f8fafc;border-radius:10px;padding:12px;font-size:10px;color:#637387}.manual-demo button{margin-top:8px}.scan-tip{position:absolute;top:15px;left:15px;right:15px;text-align:center;color:#fff;font-size:11px;font-weight:700;text-shadow:0 1px 5px #000;z-index:2}@media(max-width:700px){.instruction-grid{grid-template-columns:1fr}.record-grid{grid-template-columns:1fr 1fr}.scanner-stage video{height:330px}.scanner-stage{min-height:330px}}
+
+@media(max-width:700px){.container,.nav{padding-left:16px;padding-right:16px}.brand{min-width:0}.brand span{display:none}.hero{padding-top:45px}.hero p{font-size:15px}.hero-visual{transform:scale(.92);transform-origin:center}.cards{grid-template-columns:1fr}.status{grid-template-columns:1fr 1fr}.status-item{border-bottom:1px solid #e4eaf0}.steps{grid-template-columns:1fr 1fr}.step:not(:last-child):after{display:none}.verify-grid{grid-template-columns:1fr}.verify-wrap{padding:25px}.form-grid{grid-template-columns:1fr}.span2{grid-column:auto}.footer-main{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}.dash-main{padding:16px}.hero h1{font-size:43px}.security-card{inset:30px 0 20px 0}.float{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.gov-masthead{height:82px;background:#fff;border-bottom:1px solid #dfe6ed;display:flex;align-items:center;justify-content:center;position:relative;z-index:60}.gov-masthead .mast-inner{display:flex;align-items:center;gap:16px}.gov-masthead .mast-seal{width:48px;height:58px;display:grid;place-items:center;color:#7b5d1d;position:relative}.gov-masthead .mast-seal:before{content:"";position:absolute;width:38px;height:38px;border:2px solid #a98532;border-radius:50%;top:4px}.gov-masthead .mast-seal:after{content:"☸";font-size:24px;position:absolute;top:10px}.gov-masthead .mast-text{text-align:center;line-height:1.05}.gov-masthead .mast-hi{font-family:"Noto Sans Devanagari",sans-serif;font-size:18px;font-weight:700;color:#122033}.gov-masthead .mast-en{font:700 12px Manrope;color:#536579;letter-spacing:.08em;text-transform:uppercase;margin-top:4px}.gov-masthead .mast-motto{font-size:9px;color:#8b6b28;margin-top:4px;letter-spacing:.08em}.field-error{display:block;color:#b4232f;font-size:10px;margin-top:5px}.valid-input{border-color:#16845b!important;box-shadow:0 0 0 2px rgba(22,132,91,.08)}.invalid-input{border-color:#bd3b42!important;box-shadow:0 0 0 2px rgba(189,59,66,.08)}.live-overview{display:grid;grid-template-columns:1.5fr 1fr;gap:12px;margin-top:12px}.queue-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px}.queue-card h3{font:800 13px Manrope;color:var(--navy);margin:0 0 14px}.queue-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.queue-item{border:1px solid #e4eaf0;border-radius:8px;padding:13px;background:#fafcfd}.queue-item b{display:block;font:800 20px Manrope;color:var(--navy)}.queue-item span{font-size:10px;color:#758396}.officer-nav-title{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#71879a;padding:14px 12px 5px}.certificate-qr-box{display:flex;flex-direction:column;align-items:center;gap:7px}.certificate-qr-box img{width:120px;height:120px;border:8px solid #fff;box-shadow:0 0 0 1px #d8e0e8}.qr-payload{font:9px Consolas,monospace;color:#6e7b89;word-break:break-all;text-align:center;max-width:190px}.district-select:disabled{background:#f1f4f7;color:#8996a5;cursor:not-allowed}@media(max-width:800px){.gov-masthead{height:72px}.gov-masthead .mast-seal{transform:scale(.82)}.gov-masthead .mast-hi{font-size:15px}.live-overview{grid-template-columns:1fr}.queue-list{grid-template-columns:1fr 1fr}}
+
+/* Final SIH officer portal: sidebar removed; horizontal operations navigation */
+.officer-shell{min-height:780px;background:#f4f7fa}.officer-bar{background:#fff;border-bottom:1px solid #dbe3ec;display:flex;align-items:center;gap:18px;padding:12px 30px;position:sticky;top:0;z-index:35;box-shadow:0 4px 16px rgba(13,39,66,.05)}.officer-brand{min-width:205px}.officer-brand b{display:block;font:800 14px Manrope;color:var(--navy)}.officer-brand span{display:block;font-size:10px;color:#738193;margin-top:2px}.officer-menu{display:flex;gap:3px;align-items:center;flex:1;justify-content:center;flex-wrap:wrap}.officer-menu-btn{border:0;background:transparent;color:#536579;padding:9px 9px;border-radius:7px;font-size:11px;font-weight:700}.officer-menu-btn:hover,.officer-menu-btn.active{background:#eaf2f8;color:var(--navy)}.officer-citizen{white-space:nowrap;font-size:11px;padding:9px 12px}.dash-main{max-width:1440px;margin:0 auto;padding:28px 30px 60px}.dash-subtitle{font-size:11px;color:#7b8795;margin:5px 0 0}.kpi strong{font-variant-numeric:tabular-nums}.sidebar{display:none!important}.dash-shell{display:block!important}.officer-section-focus{outline:2px solid rgba(20,93,160,.18);outline-offset:4px;border-radius:12px}@media(max-width:1050px){.officer-bar{align-items:flex-start;flex-wrap:wrap}.officer-brand{min-width:auto}.officer-menu{order:3;width:100%;justify-content:flex-start}.officer-citizen{margin-left:auto}}@media(max-width:700px){.officer-bar{padding:12px 15px}.dash-main{padding:20px 15px 45px}.officer-menu{overflow:auto;flex-wrap:nowrap}.officer-menu-btn{white-space:nowrap}.kpis{grid-template-columns:1fr 1fr}}
+</style>
+
+<style id="govt-overrides">
+:root{
+  --gov-navy:#123b66;
+  --gov-blue:#0b5cab;
+  --gov-saffron:#e87518;
+  --gov-green:#238b45;
+  --gov-gold:#b58b32;
+  --gov-bg:#f4f6f8;
+  --gov-border:#d6dce3;
+}
+body{background:var(--gov-bg)!important;color:#1d2b38!important}
+.gov-top-strip{background:#123b66;color:#fff;font-size:12px;letter-spacing:.02em;padding:7px 0}
+.gov-top-strip .inner{max-width:1280px;margin:auto;padding:0 24px;display:flex;justify-content:space-between;gap:16px}
+.gov-header{background:#fff;border-bottom:1px solid #d5dbe2;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.gov-header .inner{max-width:1280px;margin:auto;padding:16px 24px;display:flex;align-items:center;gap:18px}
+.ashoka-mark{width:54px;height:54px;border:1px solid #c8cdd3;border-radius:50%;display:grid;place-items:center;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.ashoka-mark span{font-size:28px;line-height:1;filter:grayscale(1)}
+.gov-brand{border-left:1px solid #d6dce3;padding-left:18px}
+.gov-brand .hi{font-weight:700;font-size:18px;color:#173e67}
+.gov-brand .en{font-size:22px;font-weight:800;color:#123b66}
+.gov-brand small{display:block;color:#5c6875;margin-top:3px;font-size:12px}
+.gov-tricolor{height:4px;background:linear-gradient(90deg,var(--gov-saffron) 0 33%,#fff 33% 66%,var(--gov-green) 66%)}
+.gov-nav{max-width:1280px;margin:auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.gov-nav a,.gov-nav button{font:inherit;color:#253b50;background:none;border:0;padding:14px 10px;border-bottom:3px solid transparent;cursor:pointer}
+.gov-nav a:hover,.gov-nav button:hover{color:#0b5cab;border-bottom-color:#e87518}
+.gov-official-badge{margin-left:auto;font-size:11px;border:1px solid #bfc7d0;padding:5px 9px;border-radius:3px;color:#455565;background:#fafbfc}
+.gov-footer{background:#173e67!important;border-top:5px solid #e87518!important;color:#fff!important}
+.gov-footer a{color:#e8f0f7!important}
+.gov-emblem-label{font-size:10px;text-align:center;color:#4c5965;margin-top:4px}
+.gov-section-title{border-left:4px solid #e87518;padding-left:12px}
+.gov-card{border-radius:6px!important;border:1px solid var(--gov-border)!important;box-shadow:0 3px 12px rgba(20,45,70,.07)!important}
+.gov-btn{border-radius:4px!important}
+.gov-notice{background:#eef5fb;border:1px solid #c9dced;border-left:4px solid #0b5cab;padding:12px 14px;border-radius:4px;color:#24415c;font-size:13px}
+.field input.invalid-input,.field textarea.invalid-input,.field select.invalid-input{border-color:#c83d4a!important;box-shadow:0 0 0 2px rgba(200,61,74,.08)}
+.field input.valid-input,.field textarea.valid-input,.field select.valid-input{border-color:#16845b!important}
+.officer-section-focus{transition:outline .2s ease}
+.rejection-box{background:#fff8f8;border:1px solid #efcfd3;border-left:4px solid #b83a45;border-radius:8px;padding:13px 14px;font-size:11px;color:#5f3a3f}.rejection-box strong{color:#a5333b}.rejection-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.rejection-meta div{background:#fff;border:1px solid #eadfe1;border-radius:6px;padding:8px}.rejection-meta small{display:block;color:#8a7074;font-size:9px;margin-bottom:2px}.danger-btn{border:1px solid #e2aab0;background:#fff1f2;color:#a5333b;padding:9px 12px;border-radius:7px;font-size:11px;font-weight:800;cursor:pointer}.danger-btn:hover{background:#fde5e7}.modal-card.rejection-modal{width:min(560px,100%)}
+</style>
+
+<style id="legal-metrology-extension">
+.lm-tools-btn{position:fixed;right:18px;bottom:18px;z-index:80;border:0;background:#123b66;color:#fff;padding:11px 14px;border-radius:7px;font-weight:800;font-size:11px;box-shadow:0 10px 24px rgba(9,36,61,.2)}
+.lm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.lm-card{border:1px solid #dbe3ec;border-radius:9px;padding:14px;background:#fff}.lm-card h4{font:800 12px Manrope;color:#123b66;margin:0 0 6px}.lm-card p{font-size:10px;color:#687789;margin:0 0 10px}.lm-table{width:100%;border-collapse:collapse;font-size:10px}.lm-table th,.lm-table td{padding:8px;border-bottom:1px solid #e7edf2;text-align:left}.lm-table th{background:#f5f8fa;color:#687789}.lm-pass{color:#08734e;background:#eaf7f1;border:1px solid #b9e2d0;padding:4px 7px;border-radius:999px;font-weight:800}.lm-fail{color:#a5333b;background:#fbecee;border:1px solid #efcfd3;padding:4px 7px;border-radius:999px;font-weight:800}.lm-checks{display:grid;gap:7px}.lm-check{display:flex;gap:8px;align-items:flex-start;border:1px solid #e3e9ee;padding:8px;border-radius:7px;font-size:10px}.lm-check small{display:block;color:#758396}.lm-muted{font-size:9px;color:#7b8795}.lm-kpi{font-weight:800;color:#123b66}.lm-geo{background:#f6faf8;border:1px solid #d6ebe1;border-radius:8px;padding:10px;font-size:10px}.lm-geo b{color:#08734e}@media(max-width:700px){.lm-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="gov-masthead" aria-label="Government masthead"><div class="mast-inner"><div class="mast-seal" aria-label="Ashoka emblem"></div><div class="mast-text"><div class="mast-hi">भारत सरकार</div><div class="mast-en">Government of India</div><div class="mast-motto">सत्यमेव जयते</div></div></div></div>
+
+<div class="gov-top-strip">
+  <div class="inner">
+    <span data-i18n="topGoi">Government of India &nbsp;|&nbsp; Digital India</span>
+    <span><a href="#citizenApp" onclick="return skipToMain(event)" data-i18n="skip">Skip to main content</a> &nbsp;|&nbsp; <button type="button" class="txt-link" onclick="setLanguage('hi')">हिंदी</button></span>
+  </div>
+</div>
+
+<div class="gov-notice" style="max-width:1280px;margin:14px auto 0;padding-left:24px;padding-right:24px">
+  <strong data-i18n="noticeImportant">Important:</strong> <span data-i18n="noticeText">This is a prototype/demonstration system for the Smart India Hackathon and is not an official Government of India website.</span>
+</div>
+
+<div class="topline"></div>
+<header class="header" id="header"><nav class="nav">
+  <a class="brand" href="#home"><div class="emblem">✦</div><div><b data-i18n="brandTitle">Government of India</b><span data-i18n="brandSub">Online Verification System for Weighing & Measuring Instruments</span></div></a>
+  <div class="navlinks"><button onclick="go('home')" data-i18n="navHome">Home</button><button onclick="go('services')" data-i18n="navServices">Services</button><button onclick="openScannerInstruction()" data-i18n="navVerify">Verify</button><button onclick="track()" data-i18n="navTrack">Track Application</button><button onclick="go('footer')" data-i18n="navHelp">Help</button></div>
+  <div class="nav-actions">
+    <div class="lang-dd" id="langDD">
+      <button type="button" id="langDDBtn" onclick="toggleLangMenu(event)" aria-haspopup="true" aria-expanded="false">EN ▾</button>
+      <div class="lang-dd-menu" id="langDDMenu" role="menu">
+        <button type="button" class="lang-en active" role="menuitem" onclick="setLanguage('en')">English</button>
+        <button type="button" class="lang-hi" role="menuitem" onclick="setLanguage('hi')">हिंदी</button>
+      </div>
+    </div>
+    <button class="officer" onclick="openOfficerPortal()" data-i18n="officerBtn">Field Officer Portal</button>
+  </div>
+  <button class="mobile-menu" onclick="toast('Mobile navigation opened')">☰</button>
+</nav></header>
+
+<main id="citizenApp" tabindex="-1">
+<section class="hero" id="home"><div class="container hero-grid">
+<div><div class="eyebrow"><i></i> <span data-i18n="heroEyebrow">Digital Governance • Prototype</span></div><h1 data-i18n="heroTitle">Digital Verification for Weighing & Measuring Instruments</h1><p data-i18n="heroSub">A secure and transparent digital platform for registration, verification and certification of measuring instruments.</p><div class="actions"><button class="btn primary" onclick="openRegister()" data-i18n="btnRegister">Register Instrument →</button><button class="btn secondary" onclick="focusVerify()" data-i18n="btnVerify">Verify Certificate</button><button class="btn secondary" onclick="openScannerInstruction()" data-i18n="btnScan">⌁ Scan QR</button><button class="btn secondary" onclick="track()" data-i18n="btnTrack">Track Application</button></div><div class="demo" data-i18n="heroDemo">Prototype / Demonstration System · No real identity or official certificate data is collected.</div></div>
+<div class="hero-visual"><div class="security-card"><div class="security-head"><div class="secure-title">Digital Verification Record</div><div class="live"><i></i> Secure workflow</div></div><div class="cert"><div class="cert-top"><div><div style="font-size:9px;color:#7a8795">ONLINE VERIFICATION CERTIFICATE</div><h3>Instrument Verification</h3><small>Prototype / Demonstration Certificate</small></div><div class="seal">GOI</div></div><div class="cert-grid"><div class="kv"><small>Registration No.</small><b>WMS-2026-00001</b></div><div class="kv"><small>Status</small><b style="color:#16845b">VERIFIED</b></div><div class="kv"><small>Instrument</small><b>Electronic Weighing Scale</b></div><div class="kv"><small>Manufacturer</small><b>Demo Instruments Ltd.</b></div></div><div class="qr"></div><div class="scan"></div></div></div><div class="float f1"><div class="check">✓</div>Certificate verified</div><div class="float f2"><div class="check">⌁</div>QR authenticity check</div><div class="float f3"><div class="check">↗</div>Secure database</div></div>
+</div></section>
+
+<section class="section" id="services"><div class="container"><div class="section-head"><div><div class="eyebrow" data-i18n="svcEyebrow">Services</div><h2 data-i18n="svcTitle">One platform. Every verification step.</h2><p data-i18n="svcSub">Designed for citizens, manufacturers, verification officers and the public verification journey.</p></div></div><div class="rule"></div><div class="cards">
+<div class="service" onclick="openRegister()"><div class="icon">＋</div><h3 data-i18n="svc1Title">Register Instrument</h3><p data-i18n="svc1Body">Submit applicant, instrument and supporting information through a guided digital application.</p></div>
+<div class="service" onclick="focusVerify()"><div class="icon">✓</div><h3 data-i18n="svc2Title">Verify Instrument</h3><p data-i18n="svc2Body">Check a registration or certificate number and view appropriate public verification details.</p></div>
+<div class="service" onclick="track()"><div class="icon">↗</div><h3 data-i18n="svc3Title">Track Application</h3><p data-i18n="svc3Body">Follow application progress from submission to officer review and certificate issue.</p></div>
+<div class="service" onclick="focusVerify()"><div class="icon">▣</div><h3 data-i18n="svc4Title">Certificate Verification</h3><p data-i18n="svc4Body">Validate the authenticity and status of a digitally issued demonstration certificate.</p></div>
+<div class="service" onclick="openScannerInstruction()"><div class="icon">⌁</div><h3 data-i18n="svc5Title">QR Verification</h3><p data-i18n="svc5Body">Scan a verified instrument QR and instantly view its public authenticity and instrument details.</p><button class="btn secondary" style="margin-top:13px" onclick="event.stopPropagation();openScannerInstruction()"><span data-i18n="svc5Btn">Open QR Scanner →</span></button></div>
+<div class="service"><div class="icon">✓</div><h3 data-i18n="svc6Title">Certificate Issuance</h3><p data-i18n="svc6Body">Certificate becomes available only after successful field verification and officer approval. No direct certificate upload or issue is allowed.</p></div>
+</div></div></section>
+
+<section class="section" style="padding-top:10px"><div class="container"><div class="status"><div class="status-item"><div class="status-label" data-i18n="statSystem">System Status</div><div class="status-value"><i class="dot"></i> <span data-i18n="statOperational">Operational</span></div></div><div class="status-item"><div class="status-label" data-i18n="statDatabase">Database</div><div class="status-value"><i class="dot"></i> <span data-i18n="statConnected">Connected</span></div></div><div class="status-item"><div class="status-label" data-i18n="statVerifyService">Verification Service</div><div class="status-value"><i class="dot"></i> <span data-i18n="statOperational2">Operational</span></div></div><div class="status-item"><div class="status-label" data-i18n="statLastUpdated">Last Updated</div><div class="status-value"><i class="dot blue"></i> 26 Aug 2026, 23:24</div></div></div><div class="demo" style="margin-top:8px" data-i18n="statDemoNote">Demo status shown for the prototype. Production deployment should source this state from live services.</div></div></section>
+
+<section class="section"><div class="container"><div class="section-head"><div><div class="eyebrow" data-i18n="howEyebrow">How it works</div><h2 data-i18n="howTitle">From registration to trusted verification.</h2></div></div><div class="steps"><div class="step"><div class="num">01</div><h4 data-i18n="how1Title">Registration</h4><p data-i18n="how1Body">Applicant starts an application.</p></div><div class="step"><div class="num">02</div><h4 data-i18n="how2Title">Instrument Details</h4><p data-i18n="how2Body">Record model, serial and capacity.</p></div><div class="step"><div class="num">03</div><h4 data-i18n="how3Title">Document Submission</h4><p data-i18n="how3Body">Upload supporting documents.</p></div><div class="step"><div class="num">04</div><h4 data-i18n="how4Title">Fees & Payment</h4><p data-i18n="how4Body">Pay the applicable government verification fee.</p></div><div class="step"><div class="num">05</div><h4 data-i18n="how5Title">Officer Verification</h4><p data-i18n="how5Body">Review and validate the record.</p></div><div class="step"><div class="num">06</div><h4 data-i18n="how6Title">Certificate Issued</h4><p data-i18n="how6Body">Generate a digital certificate.</p></div><div class="step"><div class="num">07</div><h4 data-i18n="how7Title">QR Verification</h4><p data-i18n="how7Body">Public authenticity check.</p></div></div></div></section>
+
+<section class="section" id="verify"><div class="container"><div class="verify-wrap"><div class="verify-grid"><div><div class="eyebrow" style="color:#8fc1eb" data-i18n="verEyebrow">Public verification</div><h2 data-i18n="verTitle">Verify an instrument</h2><p data-i18n="verSub">Enter a registration or certificate number. Only appropriate public information is displayed.</p><div class="searchbar"><input id="verifyInput" placeholder="e.g. WMS-2026-00001" aria-label="Registration or certificate number" data-i18n-ph="verInputPh"><button onclick="verifyRecord()" data-i18n="verBtn">Verify</button></div><div class="qr-cta"><button class="btn success" onclick="openScannerInstruction()" data-i18n="verScanBtn">⌁ Scan QR Code</button><span class="qr-help" data-i18n="verScanHelp">Point your camera at the QR printed on a verified instrument or certificate.</span></div><div id="verifyResult"></div></div><div class="verify-side"><h4 data-i18n="verPrinciples">Public verification principles</h4><div><span data-i18n="verP1">Personal information</span><b data-i18n="verP1v">Protected</b></div><div><span data-i18n="verP2">QR data</span><b data-i18n="verP2v">Reference only</b></div><div><span data-i18n="verP3">Verification</span><b data-i18n="verP3v">Server-backed</b></div><div><span data-i18n="verP4">Certificate status</span><b data-i18n="verP4v">Live record</b></div></div></div></div></div></section>
+</main>
+
+<section class="dashboard" id="dashboard">
+  <div class="officer-shell">
+    <div class="officer-bar">
+      <div class="officer-brand"><b>WMS VERIFY</b><span data-i18n="offBrandSub">Field Officer Operations Portal</span></div>
+      <nav class="officer-menu" aria-label="Field officer navigation">
+        <button class="officer-menu-btn active" onclick="officerHome()"><span data-i18n="offHome">⌂ Home</span></button>
+        <button class="officer-menu-btn" onclick="officerServices()"><span data-i18n="offServices">▤ Services</span></button>
+        <button class="officer-menu-btn" onclick="officerApplications()"><span data-i18n="offApplications">▦ Applications</span></button>
+        <button class="officer-menu-btn" onclick="officerVerification()"><span data-i18n="offVerification">✓ Verification</span></button>
+        <button class="officer-menu-btn" onclick="officerCertificates()"><span data-i18n="offCertificates">▣ Certificates</span></button>
+        <button class="officer-menu-btn" onclick="officerQR()"><span data-i18n="offQR">⌁ QR Verification</span></button>
+        <button class="officer-menu-btn" onclick="officerReports()"><span data-i18n="offReports">◫ Reports</span></button>
+        <button class="officer-menu-btn" onclick="officerAudit()"><span data-i18n="offAudit">≡ Audit Logs</span></button>
+      </nav>
+      <div style="display:flex;gap:8px"><button class="btn secondary officer-citizen" onclick="showCitizen()" data-i18n="offCitizenPortal">← Citizen Portal</button><button class="btn secondary officer-citizen" onclick="logoutOfficer()" data-i18n="offLogout">Logout</button></div>
+    </div>
+    <div class="dash-main">
+      <div class="dash-top">
+        <div><div class="eyebrow" data-i18n="offConsole">Field officer console</div><h2 data-i18n="offDashTitle">Field Verification Dashboard</h2><p class="dash-subtitle" data-i18n="offDashSub">Live applications from the current citizen session</p></div>
+        <div class="profile"><div class="avatar">AV</div><div style="font-size:11px"><b data-i18n="offRoleTitle">Field Verification Officer</b><br><span style="color:#7b8795" data-i18n="offRoleSub">Demo Officer · Delhi Field Unit</span></div></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><label data-i18n="kpiPendingLbl">Pending</label><strong id="kpiPending">0</strong><div class="delta" data-i18n="kpiPendingDelta">Awaiting field verification</div></div>
+        <div class="kpi"><label data-i18n="kpiVerifiedLbl">Verified</label><strong id="kpiVerified">0</strong><div class="delta" data-i18n="kpiVerifiedDelta">Field verified and approved</div></div>
+        <div class="kpi"><label data-i18n="kpiRejectedLbl">Rejected</label><strong id="kpiRejected">0</strong><div class="delta" data-i18n="kpiRejectedDelta">Current session only</div></div>
+        <div class="kpi"><label data-i18n="kpiCertLbl">Certificates Issued</label><strong id="kpiCertificates">0</strong><div class="delta" data-i18n="kpiCertDelta">Generated after approval</div></div>
+      </div>
+      <div class="live-overview">
+        <div class="queue-card"><h3>Live Field Verification Queue</h3><div class="queue-list">
+          <div class="queue-item"><b id="livePending">0</b><span>Pending field verification</span></div>
+          <div class="queue-item"><b id="liveAssigned">0</b><span>Assigned to field officer</span></div>
+          <div class="queue-item"><b id="liveVerified">0</b><span>Field verified / approved</span></div>
+          <div class="queue-item"><b id="liveCertificates">0</b><span>Certificates issued</span></div>
+        </div></div>
+        <div class="queue-card"><h3>Current workflow</h3><p style="font-size:11px;color:#66758a;line-height:1.8;margin:0">Citizen submission → Field officer assignment → Physical verification → Officer approval → Certificate → QR public verification.</p><div class="risk low" style="margin-top:12px"><b>Live data only</b><br>Previous demo records are not loaded.</div></div>
+      </div>
+      <div class="panel table-wrap" id="officerApplicationsPanel"><div style="display:flex;justify-content:space-between;align-items:center"><div><h3 style="margin:0" data-i18n="recentApps">Recent Applications</h3><span style="font-size:10px;color:#7b8795" data-i18n="recentAppsSub">New citizen applications appear here automatically</span></div><div style="display:flex;gap:6px"><button class="row-action" onclick="exportApplicationsCSV()" data-i18n="btnExportCSV">Export CSV</button><button class="row-action" onclick="renderApplications();toast('Application queue refreshed')" data-i18n="btnRefresh">Refresh</button></div></div><table class="data-table"><thead><tr><th data-i18n="thRegNo">Registration No.</th><th data-i18n="thApplicant">Applicant</th><th data-i18n="thInstrument">Instrument</th><th data-i18n="thCategory">Category</th><th data-i18n="thManufacturer">Manufacturer</th><th data-i18n="thSerial">Serial No.</th><th data-i18n="thStatus">Status</th><th data-i18n="thSubmitted">Submitted</th><th></th></tr></thead><tbody id="appRows"></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer" id="footer"><div class="footer-main"><div><h4 data-i18n="ftBrand">Online Verification System</h4><p data-i18n="ftBrandBody">A prototype e-governance experience for registration, field verification and QR-based public verification.</p><span class="prototype" data-i18n="ftPrototype">PROTOTYPE / DEMONSTRATION SYSTEM</span></div><div><h4 data-i18n="ftServices">Services</h4><a href="#" onclick="openRegister();return false" data-i18n="ftS1">Register Instrument</a><a href="#verify" onclick="focusVerify();return false" data-i18n="ftS2">Verify Instrument</a><a href="#" onclick="openScannerInstruction();return false" data-i18n="ftS3">QR Verification</a><a href="#" onclick="track();return false" data-i18n="ftS4">Track Application</a></div><div><h4 data-i18n="ftInfo">Information</h4><a href="#" onclick="showAbout();return false" data-i18n="ftI1">About</a><a href="#" onclick="showHelp();return false" data-i18n="ftI2">Help</a><a href="#" onclick="showContact();return false" data-i18n="ftI3">Contact</a><a href="#" onclick="showPrivacy();return false" data-i18n="ftI4">Privacy</a></div><div><h4 data-i18n="ftOfficer">Field Officer</h4><a href="#" onclick="openOfficerPortal();return false" data-i18n="ftO1">Field Officer Portal</a><a href="#" onclick="openOfficerPortal();return false" data-i18n="ftO2">Field Verification</a><a href="#home" onclick="showCitizen();return false" data-i18n="ftO3">Home</a><a href="#" onclick="showSitemap();return false" data-i18n="ftO4">Sitemap</a></div></div><div class="footer-bottom" data-i18n="ftBottom">Prototype / Demonstration System · Not an official Government of India website · Built for SIH demonstration purposes</div></footer>
+
+<div class="modal" id="registerModal"><div class="modal-card"><div class="modal-head"><h3 data-i18n="regTitle">Register Instrument</h3><button class="close" onclick="closeModal('registerModal')">×</button></div><div class="modal-body"><div class="steps-form"><div class="sf active" data-i18n="sf1">01 Applicant</div><div class="sf" data-i18n="sf2">02 Instrument</div><div class="sf" data-i18n="sf3">03 Documents</div><div class="sf" data-i18n="sf4">04 Fees &amp; Payment</div><div class="sf" data-i18n="sf5">05 Declaration</div><div class="sf" data-i18n="sf6">06 Submit</div></div><div id="formStep1"><div class="form-grid"><div class="field"><label data-i18n="lblName">Applicant Name</label><input id="fName" minlength="2" maxlength="80" placeholder="Applicant full name" data-i18n-ph="phName" required><span class="field-error" id="nameError"></span></div><div class="field"><label data-i18n="lblMobile">Mobile Number</label><input id="fMobile" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" placeholder="9876543210" required><span class="field-error" id="mobileError"></span></div><div class="field"><label data-i18n="lblEmail">Email</label><input id="fEmail" type="email" maxlength="120" placeholder="applicant@example.gov.in" required><span class="field-error" id="emailError"></span></div><div class="field"><label data-i18n="lblApplicantType">Applicant Type</label><select id="fApplicantType" required><option value="" data-i18n="optSelectType">Select applicant type</option><option value="Business / Organization" data-i18n="optBusiness">Business / Organization</option><option value="Individual" data-i18n="optIndividual">Individual</option><option value="Manufacturer" data-i18n="optManufacturer">Manufacturer</option></select></div><div class="field span2"><label data-i18n="lblAddress">Address</label><textarea id="fAddress" rows="2" minlength="10" placeholder="Registered address" data-i18n-ph="phAddress" required></textarea><span class="field-error" id="addressError"></span></div><div class="field"><label data-i18n="lblState">State</label><select id="fState" required><option value="" data-i18n="optSelectState">Select State</option><option>Delhi</option><option>Uttar Pradesh</option><option>Maharashtra</option><option>Karnataka</option></select></div><div class="field"><label data-i18n="lblDistrict">District</label><select id="fDistrict" class="district-select" disabled required><option value="" data-i18n="optSelectStateFirst">Select state first</option></select><span class="field-error" id="districtError"></span></div><div class="field span2"><label data-i18n="lblIdentity">Identity Verification Reference</label><input id="fIdentity" placeholder="DEMO-ID-2026-001" required><div class="demo" data-i18n="noteIdentity">Demo identity verification. Do not enter real Aadhaar information.</div></div></div><div class="modal-actions"><button class="btn secondary" onclick="closeModal('registerModal')" data-i18n="btnCancel">Cancel</button><button class="btn primary" onclick="nextForm()" data-i18n="btnContinue">Continue →</button></div></div><div id="formStep2" class="hidden"><div class="form-grid"><div class="field"><label data-i18n="lblInstrument">Instrument Name</label><input id="fInstrument" placeholder="e.g. Electronic Weighing Scale" required></div><div class="field"><label data-i18n="lblCategory">Category</label><select id="fCategory" required onchange="updateFeeSummary()"><option value="" data-i18n="optSelectCategory">Select category</option><option value="Weighing Instrument" data-i18n="catWeighing">Weighing Instrument</option><option value="Measuring Instrument" data-i18n="catMeasuring">Measuring Instrument</option><option value="Retail Scale" data-i18n="catRetail">Retail Scale</option><option value="Industrial Scale" data-i18n="catIndustrial">Industrial Scale</option></select></div><div class="field"><label data-i18n="lblManufacturer">Manufacturer</label><input id="fManufacturer" placeholder="Manufacturer name" required></div><div class="field"><label data-i18n="lblModel">Model Number</label><input id="fModel" placeholder="Model number" required></div><div class="field"><label data-i18n="lblSerial">Serial Number</label><input id="fSerial" placeholder="Enter unique serial number" required><span class="field-error" id="serialError"></span></div><div class="field"><label data-i18n="lblManufacturingDate">Manufacturing Date</label><input id="fManufacturingDate" type="date" required></div><div class="field"><label data-i18n="lblPurchaseDate">Purchase Date</label><input id="fPurchaseDate" type="date" required></div><div class="field"><label data-i18n="lblCapacity">Capacity</label><input id="fCapacity" placeholder="e.g. 30 kg" required></div><div class="field"><label data-i18n="lblAccuracy">Accuracy Class</label><select id="fAccuracy" required><option value="" data-i18n="optSelectAccuracy">Select accuracy class</option><option>Class III</option><option>Class II</option><option>Class IV</option></select></div><div class="field"><label data-i18n="lblUnit">Unit</label><select id="fUnit" required><option value="" data-i18n="optSelectUnit">Select unit</option><option>kg</option><option>g</option><option>L</option><option>m</option></select></div><div class="field span2"><label data-i18n="lblDescription">Description</label><textarea id="fDescription" rows="2" placeholder="Instrument description" required></textarea></div></div><div class="modal-actions"><button class="btn secondary" onclick="prevForm()" data-i18n="btnBack">← Back</button><button class="btn primary" onclick="nextDocs()" data-i18n="btnContinue">Continue →</button></div></div><div id="formStep3" class="hidden"><div class="upload"><div style="font-size:30px;color:var(--blue)">↑</div><strong data-i18n="uploadTitle">Drag and drop documents here</strong><p data-i18n="uploadTypes">Invoice · Manufacturer certificate · Instrument photograph · Supporting documents</p><input id="documentFiles" type="file" multiple accept=".pdf,.jpg,.jpeg,.png" hidden onchange="handleDocumentFiles(this.files)"><button class="btn secondary" onclick="document.getElementById('documentFiles').click()" data-i18n="btnChooseDocs">Choose Documents</button><button class="btn secondary" onclick="simulateUpload()" data-i18n="btnDemoFiles">Use Demo Files</button><div id="uploadList" style="margin-top:15px"></div></div><div class="modal-actions"><button class="btn secondary" onclick="prevDocs()" data-i18n="btnBack">← Back</button><button class="btn primary" onclick="showFeesStep()" data-i18n="btnContinue">Continue →</button></div></div><div id="formStep4" class="hidden"><div class="gov-notice" data-i18n="feeAdvisoryNote">Fees shown below are indicative, as per the Legal Metrology (General) Rules, 2011 (Second Schedule) fee advisory. Every instrument category attracts a different verification/stamping fee; the exact rate notified by your State Legal Metrology authority may vary.</div><div id="feesSummary" style="margin-top:14px"></div><div class="field" style="margin-top:16px"><label data-i18n="lblPaymentMethod">Select Payment Method</label><div class="form-grid" style="grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px" id="paymentMethodGrid"><label class="lm-card" style="display:flex;gap:8px;align-items:center;cursor:pointer;padding:12px"><input type="radio" name="payMethod" value="card" onchange="selectPaymentMethod('card')"> <span data-i18n="payCard">💳 Debit / Credit Card</span></label><label class="lm-card" style="display:flex;gap:8px;align-items:center;cursor:pointer;padding:12px"><input type="radio" name="payMethod" value="upi" onchange="selectPaymentMethod('upi')" checked> <span data-i18n="payUPI">📲 UPI</span></label><label class="lm-card" style="display:flex;gap:8px;align-items:center;cursor:pointer;padding:12px"><input type="radio" name="payMethod" value="netbanking" onchange="selectPaymentMethod('netbanking')"> <span data-i18n="payNetBanking">🏦 Net Banking</span></label></div></div><div id="upiPayBox" style="margin-top:14px"><div class="field"><label data-i18n="lblUpiId">Your UPI ID</label><input id="fUpiId" placeholder="yourname@upi" data-i18n-ph="phUpiId"><span class="field-error" id="upiIdError"></span></div><div class="demo" data-i18n="noteUpiRedirect">Prototype: on clicking Pay Now, you will be redirected to your UPI app / bank account to complete this payment.</div></div><div id="paymentStatusBox" style="margin-top:14px"></div><div class="modal-actions"><button class="btn secondary" onclick="prevFees()" data-i18n="btnBack">← Back</button><button class="btn primary" onclick="payNow()" id="payNowBtn" data-i18n="btnPayNow">Pay Now →</button><button class="btn success hidden" onclick="showDeclaration()" id="feeContinueBtn" data-i18n="btnContinue">Continue →</button></div></div><div id="formStep5" class="hidden"><div class="risk low"><strong data-i18n="preCheckTitle">✓ Pre-submission validation passed</strong><br><span data-i18n="preCheckBody">Required fields present. Duplicate serial check is simulated for this prototype.</span></div><p style="font-size:12px;color:#566578" data-i18n="declText">Declaration: I confirm that the information supplied in this prototype application is for demonstration purposes only.</p><label style="font-size:12px"><input type="checkbox" id="declare"> <span data-i18n="declAgree">I agree to the demonstration declaration.</span></label><div class="modal-actions"><button class="btn secondary" onclick="prevToDocs()" data-i18n="btnBack">← Back</button><button class="btn primary" onclick="submitApplication()" data-i18n="btnSubmit">Submit Application</button></div></div></div></div></div>
+
+<div class="modal" id="successModal"><div class="modal-card"><div class="success-state"><div class="success-icon">✓</div><div class="eyebrow" style="justify-content:center" data-i18n="succEyebrow">Submission complete</div><h2 style="font:800 30px Manrope;color:var(--navy);margin:8px 0" data-i18n="succTitle">Application Submitted Successfully</h2><p style="color:#6b7a8c;font-size:13px" data-i18n="succSub">Your prototype application has entered the officer verification workflow.</p><div class="regno">WMS-2026-00001</div><p style="font-size:11px;color:#7b8795" data-i18n="succRegNo">Registration Number</p><div class="verified" style="justify-content:center" id="succFeeBox"></div><div class="actions" style="justify-content:center;margin-top:20px"><button class="btn primary" onclick="closeModal('successModal');trackApplicationByLast()" data-i18n="btnViewApp">View Application</button><button class="btn secondary" onclick="downloadAcknowledgement()" data-i18n="btnDownloadAck">Download Acknowledgement</button><button class="btn success" onclick="closeModal('successModal');trackApplicationByLast()" data-i18n="btnTrackApp">Track Application</button></div></div></div></div>
+
+<div class="modal" id="loginModal"><div class="modal-card" style="max-width:450px"><div class="modal-head"><h3 data-i18n="loginTitle">Field Officer Login</h3><button class="close" onclick="closeModal('loginModal')">×</button></div><div class="modal-body"><div style="text-align:center;margin-bottom:22px"><div class="emblem" style="margin:auto">✦</div><h3 style="font:800 18px Manrope;color:var(--navy);margin:12px 0 3px" data-i18n="loginSubtitle">Secure Field Officer Authentication</h3><p style="font-size:11px;color:#738193" data-i18n="loginAuthOnly">Authorized officers only</p></div><div class="field"><label data-i18n="lblOfficialEmail">Official Email Address</label><input id="officerEmail" type="email" autocomplete="username" placeholder="Enter officer email" data-i18n-ph="phOfficerEmail" required></div><div class="field" style="margin-top:14px"><label data-i18n="lblPassword">Password</label><input id="officerPassword" type="password" autocomplete="current-password" placeholder="Enter password" data-i18n-ph="phPassword" required><span class="field-error" id="loginError"></span></div><div class="risk low" style="margin-top:16px"><strong data-i18n="loginDemoCreds">Demo credentials</strong><br>Email: <b>officer@wms.gov.in</b> · Password: <b>WMS@2026</b><br><span style="display:block;margin-top:5px" data-i18n="loginDemoNote">For SIH demonstration only. Production deployment should use secure server-side authentication.</span></div><button class="btn primary" style="width:100%;justify-content:center;margin-top:18px" onclick="login()" data-i18n="btnAuthenticate">Authenticate &amp; Open Portal →</button></div></div></div>
+<div class="modal" id="trackModal"><div class="modal-card" style="max-width:700px"><div class="modal-head"><h3 data-i18n="trackTitle">Track Application</h3><button class="close" onclick="closeModal('trackModal')">×</button></div><div class="modal-body"><div class="field"><label data-i18n="lblRegOrApp">Registration / Application Number</label><div class="searchbar" style="border:1px solid #ced9e4;box-shadow:none"><input id="trackInput" placeholder="e.g. WMS-2026-00001"><button onclick="showTrack()" data-i18n="btnTrackShort">Track</button></div></div><div id="trackTimeline" style="margin-top:25px"></div></div></div></div>
+
+<div class="modal" id="qrInstructionModal"><div class="modal-card scanner-card"><div class="modal-head"><div><div class="eyebrow" data-i18n="qriEyebrow">Public QR verification</div><h3 data-i18n="qriTitle">Before you scan</h3></div><button class="close" onclick="closeModal('qrInstructionModal')">×</button></div><div class="modal-body"><div style="background:#f6faf8;border:1px solid #d6ebe1;border-radius:11px;padding:15px"><strong style="font:800 14px Manrope;color:var(--navy)" data-i18n="qriSafe">Scan safely. Verify instantly.</strong><p style="margin:5px 0 0;font-size:11px;color:#687789" data-i18n="qriSafeBody">The QR should open a WMS verification reference. Never share private applicant information through a QR code.</p></div><div class="instruction-grid"><div class="instruction"><div class="stepnum">01</div><h4 data-i18n="qri1Title">Allow camera access</h4><p data-i18n="qri1Body">Tap “Start Camera” and allow your browser to use the camera when prompted.</p></div><div class="instruction"><div class="stepnum">02</div><h4 data-i18n="qri2Title">Place the QR inside the frame</h4><p data-i18n="qri2Body">Keep the QR flat, well-lit and centered. Hold the phone steady for a moment.</p></div><div class="instruction"><div class="stepnum">03</div><h4 data-i18n="qri3Title">Review the verified record</h4><p data-i18n="qri3Body">After detection, the system shows only public instrument and certificate information.</p></div></div><div class="manual-demo"><b data-i18n="qriTipLabel">Demo tip:</b> <span data-i18n="qriTipBody">If camera scanning is unavailable on this device, use the demo scan button to experience the complete verification flow.</span></div><div class="modal-actions"><button class="btn secondary" onclick="closeModal('qrInstructionModal')" data-i18n="btnCancel">Cancel</button><button class="btn primary" onclick="startScanner()" data-i18n="btnStartScanner">Start QR Scanner →</button><button class="btn success" onclick="demoScan()" data-i18n="btnDemoQR">Use Demo QR</button></div></div></div></div>
+
+<div class="modal" id="qrScannerModal"><div class="modal-card scanner-card"><div class="modal-head"><div><div class="eyebrow">Live camera verification</div><h3>Scan instrument QR</h3></div><button class="close" onclick="stopScanner();closeModal('qrScannerModal')">×</button></div><div class="modal-body"><div class="scanner-stage"><div class="scan-tip">Align the QR inside the frame</div><video id="qrVideo" autoplay muted playsinline></video><div class="scan-frame"><div class="scanner-line"></div></div><div class="scanner-status"><span id="scannerStatus">Starting camera…</span><b>Secure scan</b></div></div><div class="manual-demo"><b>Need a fallback?</b> Camera QR detection depends on browser/device support. You can still demonstrate the verified-record journey without camera access.<br><button class="btn secondary" onclick="demoScan()">Simulate Successful QR Scan</button></div><div class="modal-actions"><button class="btn secondary" onclick="stopScanner();closeModal('qrScannerModal');openScannerInstruction()">← Instructions</button><button class="btn primary" onclick="stopScanner();closeModal('qrScannerModal')">Close Scanner</button></div></div></div></div>
+
+<div class="modal" id="certificateModal"><div class="modal-card" style="max-width:900px"><div class="modal-head"><h3>Digital Certificate Preview</h3><button class="close" onclick="closeModal('certificateModal')">×</button></div><div class="modal-body"><div id="certificateSheet" style="border:8px double #d6c27d;padding:35px;background:#fffef9;position:relative;min-height:650px"><div style="position:absolute;inset:20px;border:1px solid #eadfb8;pointer-events:none"></div><div style="text-align:center"><div class="seal" style="margin:auto">GOI</div><div style="font:700 12px Manrope;color:#7a5d1b;margin-top:10px">GOVERNMENT-STYLE DIGITAL PORTAL</div><h2 style="font:800 25px Manrope;color:var(--navy);margin:9px 0">ONLINE VERIFICATION CERTIFICATE</h2><div style="font-size:10px;color:#8b7d62">PROTOTYPE / DEMONSTRATION CERTIFICATE</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;margin-top:30px;font-size:11px"><div><b>Certificate Number</b><br><span id="certNumberValue">—</span></div><div><b>Registration Number</b><br><span id="certRegistrationValue">—</span></div><div><b>Applicant Name</b><br><span id="certApplicantValue">—</span></div><div><b>Applicant Email</b><br><span id="certEmailValue">—</span></div><div><b>Address</b><br><span id="certAddressValue">—</span></div><div><b>State / District</b><br><span id="certLocationValue">—</span></div><div><b>Instrument</b><br><span id="certInstrumentValue">—</span></div><div><b>Category</b><br><span id="certCategoryValue">—</span></div><div><b>Manufacturer / Model</b><br><span id="certManufacturerValue">—</span></div><div><b>Serial Number</b><br><span id="certSerialValue">—</span></div><div><b>Capacity</b><br><span id="certCapacityValue">—</span></div><div><b>Verification Date</b><br><span id="certDateValue">—</span></div><div><b>Valid Till</b><br><span id="certValidTillValue">—</span></div><div><b>Verification Period</b><br><span id="certValidityPeriodValue">—</span></div><div><b>Status</b><br><span style="color:#16845b;font-weight:800">VERIFIED / APPROVED</span></div><div><b>Authorized Field Officer</b><br><span id="certOfficerValue">—</span><br><small id="certOfficerEmail" style="color:#687789">—</small></div></div><div style="margin-top:30px;padding-top:20px;border-top:1px solid #e3d9b4;display:grid;grid-template-columns:1fr 180px;gap:25px;align-items:end"><div><div style="font-family:cursive;font-size:28px;color:#173d63;font-weight:700" id="certSignature">—</div><div style="border-top:1px solid #9a927f;width:230px;padding-top:5px;font-size:10px"><b>Digital Signature</b><br>Authenticated by Authorized Field Officer</div><div style="font-size:9px;color:#766f60;margin-top:12px">This certificate is a prototype/demonstration artifact. It is not an official Government of India certificate and has no legal validity. Applicant contact information is shown here only because this is a private certificate preview.</div></div><div class="certificate-qr-box"><img id="certificateQR" alt="Certificate verification QR code"><div id="certificateQRPayload" class="qr-payload">Verification reference will appear here</div><button class="btn secondary" style="font-size:10px;padding:8px 10px" onclick="closeModal('certificateModal');openScannerInstruction()">Test QR Scanner</button></div></div></div><div class="modal-actions"><button class="btn secondary" onclick="downloadCertificate()">Download Certificate</button><button class="btn primary" onclick="emailCertificate()">Email Certificate to Applicant</button><button class="btn success" onclick="openGoogleVerification()">Open WMS Verification Page</button></div></div></div></div>
+<div class="drawer" id="drawer" onclick="if(event.target===this)closeDrawer()"><div class="drawer-card"><div class="drawer-head"><div><div class="eyebrow">Field verification case</div><h3 id="drawerTitle">Application</h3></div><button class="close" onclick="closeDrawer()">×</button></div><div class="detail" id="drawerContent"></div></div></div>
+<div class="modal" id="rejectionModal"><div class="modal-card rejection-modal"><div class="modal-head"><div><div class="eyebrow">Officer decision</div><h3>Reject Application</h3></div><button class="close" onclick="closeModal('rejectionModal')">×</button></div><div class="modal-body"><div class="risk" style="margin-bottom:16px"><strong>Important</strong><br>Rejection is a recorded officer decision. Select a reason and provide remarks where required.</div><div class="field"><label>Rejection Reason</label><select id="rejectReason" onchange="toggleRejectRemarks()"><option value="">Select rejection reason</option><option>Incomplete documents</option><option>Instrument non-compliant</option><option>Duplicate serial number</option><option>Other</option></select><span class="field-error" id="rejectReasonError"></span></div><div class="field" style="margin-top:14px"><label>Officer Remarks <span id="remarksRequiredLabel" style="color:#a5333b"></span></label><textarea id="rejectRemarks" rows="4" maxlength="500" placeholder="Add remarks for the applicant / record"></textarea><span class="field-error" id="rejectRemarksError"></span></div><div class="modal-actions"><button class="btn secondary" onclick="closeModal('rejectionModal')">Cancel</button><button class="danger-btn" onclick="confirmReject()">Confirm Rejection</button></div></div></div></div>
+<div class="modal" id="infoModal"><div class="modal-card" style="max-width:560px"><div class="modal-head"><h3 id="infoTitle">Help</h3><button class="close" onclick="closeModal('infoModal')">×</button></div><div class="modal-body" id="infoBody"></div></div></div>
+<div class="toast" id="toast"></div>
+<script>
+/* 
+/* WMS SIH FINAL WORKING BUILD — inline script avoids broken/missing JS path issues when opened locally */
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+// New storage key intentionally starts empty so old prototype records are not carried forward.
+const STORE_KEY = 'wms_sih_live_applications_v4';
+localStorage.removeItem('wms_sih_live_applications_v3');
+localStorage.removeItem('wms_sih_applications_v2');
+localStorage.removeItem('wms_sih_applications_v1');
+
+let qrStream = null;
+let qrTimer = null;
+let barcodeDetector = null;
+let lastSubmittedId = null;
+let uploadedDocuments = false;
+
+const DISTRICTS = {
+  'Delhi': ['Central Delhi','East Delhi','New Delhi','North Delhi','North East Delhi','North West Delhi','Shahdara','South Delhi','South East Delhi','South West Delhi','West Delhi'],
+  'Uttar Pradesh': ['Agra','Aligarh','Ayodhya','Bareilly','Ghaziabad','Gorakhpur','Kanpur Nagar','Lucknow','Mathura','Meerut','Prayagraj','Varanasi'],
+  'Maharashtra': ['Ahmednagar','Amravati','Aurangabad','Mumbai City','Mumbai Suburban','Nagpur','Nashik','Pune','Raigad','Thane'],
+  'Karnataka': ['Bengaluru Urban','Belagavi','Dakshina Kannada','Dharwad','Hassan','Mysuru','Shivamogga','Tumakuru','Udupi','Vijayapura']
+};
+
+function getApps(){
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
+  catch(e){ return []; }
+}
+function saveApps(apps){ localStorage.setItem(STORE_KEY, JSON.stringify(apps)); renderApplications(); }
+function nextRegistration(){
+  const apps=getApps();
+  const max=apps.reduce((m,a)=>{const n=Number(String(a.id||'').split('-').pop());return Number.isFinite(n)?Math.max(m,n):m;},0);
+  return 'WMS-'+new Date().getFullYear()+'-'+String(max+1).padStart(5,'0');
+}
+function nowStamp(){
+  return new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+/* Official central Legal Metrology Rule 27 verification periods.
+   The validity clock starts from the field-verification date.
+   24 months: weights, capacity measures, length measures, tape, beam scales, counter machines.
+   60 months: storage tanks.
+   12 months: other weights/measures, including tank lorries. */
+function getVerificationPeriod(r){
+  const text=((r?.instrumentName||'')+' '+(r?.category||'')).toLowerCase();
+  if(/storage\s*tank|tank\s*storage/.test(text)) return {months:60,label:'60 months (5 years)',basis:'Storage tank'};
+  if(/beam\s*scale|counter\s*machine|measuring\s*tape|\btape\b|length\s*measure|capacity\s*measure|\bweight\b/.test(text)) return {months:24,label:'24 months (2 years)',basis:'Rule 27(a) category'};
+  return {months:12,label:'12 months (1 year)',basis:'Rule 27(c) — other weight/measure'};
+}
+function addMonthsSafe(date,months){
+  const d=new Date(date); const day=d.getDate();
+  d.setDate(1); d.setMonth(d.getMonth()+months);
+  const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+  d.setDate(Math.min(day,last)); return d;
+}
+function parseVerificationDate(value){
+  if(!value) return new Date();
+  const parsed=new Date(value); if(!Number.isNaN(parsed.getTime())) return parsed;
+  const m=String(value).match(/(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})/);
+  if(m){ const d=new Date(`${m[1]} ${m[2]} ${m[3]} 12:00:00`); if(!Number.isNaN(d.getTime())) return d; }
+  return new Date();
+}
+function formatDateOnly(date){return date.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});}
+function getValidityDetails(r){
+  const period=getVerificationPeriod(r);
+  const verificationDate=r?.verificationDate||nowStamp();
+  const start=parseVerificationDate(verificationDate);
+  const validTill=addMonthsSafe(start,period.months);
+  return {period,start,validTill,verificationDate,validTillText:formatDateOnly(validTill)};
+}
+function esc(v){
+  return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+}
+
+window.addEventListener('scroll',()=>{
+  const h=$('#header');
+  if(h) h.classList.toggle('scrolled',scrollY>10);
+});
+
+function go(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); }
+function toast(msg){
+  const t=$('#toast'); if(!t)return;
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(window._toast);
+  window._toast=setTimeout(()=>t.classList.remove('show'),3000);
+}
+function openModal(id){ const m=$('#'+id); if(m)m.classList.add('show'); }
+function closeModal(id){ const m=$('#'+id); if(m)m.classList.remove('show'); }
+function closeAllModals(){ $$('.modal.show').forEach(m=>m.classList.remove('show')); }
+
+function openRegister(){
+  openModal('registerModal');
+  showStep(1);
+  uploadedDocuments=false;
+  $('#uploadList').innerHTML='';
+  paymentCompleted=false;selectedPaymentMethod='upi';currentFeeAmount=0;
+  if($('#fUpiId'))$('#fUpiId').value='';
+  if($('#paymentStatusBox'))$('#paymentStatusBox').innerHTML='';
+  const upiRadio=document.querySelector('input[name="payMethod"][value="upi"]');if(upiRadio)upiRadio.checked=true;
+  $('#feeContinueBtn')?.classList.add('hidden');
+  $('#payNowBtn')?.classList.remove('hidden');
+}
+function openLogin(){ openModal('loginModal'); }
+function openOfficerPortal(){
+  if(sessionStorage.getItem('wmsOfficerAuthenticated') !== 'true'){
+    openLogin();
+    return;
+  }
+  closeAllModals();
+  $('#citizenApp').style.display='none';
+  $('#footer').style.display='none';
+  $('#dashboard').style.display='block';
+  renderApplications();
+  officerHome();
+  window.scrollTo({top:0,behavior:'smooth'});
+  toast('Field Officer Portal opened · live application queue loaded');
+}
+function focusVerify(){ go('verify'); setTimeout(()=>$('#verifyInput')?.focus(),500); }
+function track(){ openModal('trackModal'); showTrack(); }
+
+function showCitizen(){
+  $('#dashboard').style.display='none';
+  $('#citizenApp').style.display='block';
+  $('#footer').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function login(){
+  const email = ($('#officerEmail')?.value || '').trim().toLowerCase();
+  const password = ($('#officerPassword')?.value || '');
+  const error = $('#loginError');
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const demoEmail = 'officer@wms.gov.in';
+  const demoPassword = 'WMS@2026';
+
+  if (!validEmail) {
+    if(error) error.textContent='Enter a valid official email address.';
+    return;
+  }
+  if (!password) {
+    if(error) error.textContent='Password is required.';
+    return;
+  }
+  if (email !== demoEmail || password !== demoPassword) {
+    if(error) error.textContent='Invalid officer email or password.';
+    toast('Authentication failed');
+    return;
+  }
+
+  if(error) error.textContent='';
+  sessionStorage.setItem('wmsOfficerAuthenticated','true');
+  sessionStorage.setItem('wmsOfficerEmail',email);
+  closeModal('loginModal');
+  openOfficerPortal();
+}
+
+function logoutOfficer(){
+  sessionStorage.removeItem('wmsOfficerAuthenticated');
+  sessionStorage.removeItem('wmsOfficerEmail');
+  $('#dashboard').style.display='none';
+  $('#citizenApp').style.display='block';
+  $('#footer').style.display='block';
+  toast('Officer signed out successfully');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Officer portal navigation — these were previously dead buttons.
+function officerHome(){
+  $('#dashboard').style.display='block';
+  activateOfficerLink(0);
+  const main=$('#dashboard .dash-main');
+  if(main) main.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function officerServices(){
+  activateOfficerLink(1);
+  $('#infoTitle').textContent='Field Officer Services';
+  $('#infoBody').innerHTML=`
+    <p><b>Application Queue</b> — Newly submitted applications appear automatically.</p>
+    <p><b>Field Verification</b> — Open a case, assign a field officer, then complete physical verification.</p>
+    <p><b>Certificate</b> — Certificate generation is locked until field verification and approval are complete.</p>
+    <p><b>QR Verification</b> — Approved instruments receive a verification QR.</p>
+    <div class="modal-actions"><button class="btn primary" onclick="closeModal('infoModal');officerApplications()">Open Applications →</button><button class="btn secondary" onclick="closeModal('infoModal');officerVerification()">Open Verification</button></div>`;
+  openModal('infoModal');
+}
+function officerApplications(){ activateOfficerLink(2); officerSectionFocus('#officerApplicationsPanel'); }
+function officerVerification(){ activateOfficerLink(3); officerSectionFocus('#officerApplicationsPanel'); toast('Verification queue opened — open an application to assign and verify a field visit'); }
+function officerCertificates(){ activateOfficerLink(4); const app=getApps().find(a=>a.certificateNumber); if(app)openDrawer(app.id); else toast('No certificates issued yet'); }
+function officerQR(){ activateOfficerLink(5); const app=getApps().find(a=>a.status==='Verified'); if(app){openDrawer(app.id);toast('Approved record ready for QR verification')}else toast('No approved instrument available for QR verification'); }
+function officerReports(){ activateOfficerLink(6); $('#infoTitle').textContent='Reports'; $('#infoBody').innerHTML='<p>Reports in this prototype are live-session summaries only. Historical records are intentionally not loaded.</p>'; openModal('infoModal'); }
+function officerAudit(){ activateOfficerLink(7); $('#infoTitle').textContent='Audit Logs'; $('#infoBody').innerHTML='<p>Every assignment, field verification and certificate action is timestamped in the application workflow. Production deployment should persist these events in an audit_logs table.</p>'; openModal('infoModal'); }
+function activateOfficerLink(index){
+  $$('.officer-menu-btn').forEach((b,i)=>b.classList.toggle('active',i===index));
+}
+function officerSectionFocus(selector){
+  const el=document.querySelector(selector);
+  if(el){el.classList.add('officer-section-focus');el.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>el.classList.remove('officer-section-focus'),1200);}
+}
+
+// Registration wizard
+function showStep(n){
+  [1,2,3,4,5].forEach(i=>$('#formStep'+i)?.classList.toggle('hidden',i!==n));
+  $$('.sf').forEach((e,i)=>e.classList.toggle('active',i<n));
+}
+
+function showFieldError(id,msg){
+  const el=$('#'+id); if(el) el.textContent=msg||'';
+}
+function markInput(id,valid){
+  const el=$('#'+id); if(!el)return;
+  el.classList.toggle('valid-input',!!valid);
+  el.classList.toggle('invalid-input',!valid);
+}
+function validateStep1(){
+  const name=$('#fName')?.value.trim()||'';
+  const mobile=$('#fMobile')?.value.trim()||'';
+  const email=$('#fEmail')?.value.trim()||'';
+  const address=$('#fAddress')?.value.trim()||'';
+  const state=$('#fState')?.value||'';
+  const district=$('#fDistrict')?.value||'';
+  const identity=$('#fIdentity')?.value.trim()||'';
+  const applicantType=$('#fApplicantType')?.value||'';
+  let ok=true;
+
+  const nameOK=/^[A-Za-z][A-Za-z .'-]{1,79}$/.test(name) && name.replace(/[^A-Za-z]/g,'').length>=2;
+  const mobileOK=/^[6-9]\d{9}$/.test(mobile);
+  const emailOK=/^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$/.test(email);
+  const addressOK=address.length>=10;
+  const districtOK=!!state&&!!district;
+  const identityOK=identity.length>=4;
+  const applicantTypeOK=!!applicantType;
+
+  markInput('fName',nameOK);markInput('fMobile',mobileOK);markInput('fApplicantType',applicantTypeOK);markInput('fEmail',emailOK);markInput('fAddress',addressOK);markInput('fDistrict',districtOK);markInput('fIdentity',identityOK);
+  showFieldError('nameError',nameOK?'':'Enter a valid full name (letters only, 2–80 characters).');
+  showFieldError('mobileError',mobileOK?'':'Enter a valid 10-digit Indian mobile number starting with 6–9.');
+  showFieldError('emailError',emailOK?'':'Enter a valid email address, e.g. name@example.com.');
+  showFieldError('addressError',addressOK?'':'Address is required and must be at least 10 characters.');
+  showFieldError('districtError',districtOK?'':'Select a state and then select its district.');
+
+  if(!applicantTypeOK) toast('Please select an applicant type');
+  return nameOK&&mobileOK&&emailOK&&addressOK&&districtOK&&identityOK&&applicantTypeOK;
+}
+function validateStep2(){
+  const required=['fInstrument','fCategory','fManufacturer','fModel','fSerial','fManufacturingDate','fPurchaseDate','fCapacity','fAccuracy','fUnit','fDescription'];
+  let ok=true;
+  required.forEach(id=>{const el=$('#'+id);const valid=!!el&&!!el.value.trim();if(el)markInput(id,valid);if(!valid)ok=false;});
+
+  const serial=$('#fSerial')?.value.trim().toUpperCase()||'';
+  if(serial){
+    const duplicate=getApps().some(a=>String(a.serial||'').trim().toUpperCase()===serial);
+    if(duplicate){markInput('fSerial',false);showFieldError('serialError','This serial number is already registered in the current live session.');toast('Duplicate serial number detected');return false;}
+  }
+
+  const m=$('#fManufacturingDate')?.value||'';
+  const p=$('#fPurchaseDate')?.value||'';
+  const today=new Date().toISOString().slice(0,10);
+  if(m&&m>today){markInput('fManufacturingDate',false);toast('Manufacturing date cannot be in the future');ok=false;}
+  if(p&&p>today){markInput('fPurchaseDate',false);toast('Purchase date cannot be in the future');ok=false;}
+  if(m&&p&&p<m){markInput('fPurchaseDate',false);toast('Purchase date cannot be earlier than manufacturing date');ok=false;}
+
+  if(!ok)toast('Please complete all required instrument details correctly');
+  return ok;
+}
+function nextForm(){ if(validateStep1())showStep(2); }
+function prevForm(){ showStep(1); }
+function nextDocs(){ if(validateStep2())showStep(3); }
+function prevDocs(){ showStep(2); }
+function showFeesStep(){
+  if(!uploadedDocuments){toast('Please add the required demonstration documents first');return;}
+  updateFeeSummary();
+  showStep(4);
+}
+function showDeclaration(){
+  if(!paymentCompleted){toast('Please complete the fee payment before proceeding');return;}
+  showStep(5);
+}
+function prevToDocs(){showStep(4);}
+function prevFees(){showStep(3);}
+
+function handleDocumentFiles(files){
+  if(!files||!files.length){uploadedDocuments=false;return;}
+  const allowed=['application/pdf','image/jpeg','image/png'];
+  const valid=[...files].filter(f=>allowed.includes(f.type)&&f.size<=5*1024*1024);
+  if(valid.length!==files.length){toast('Only PDF/JPG/PNG files up to 5 MB are allowed');uploadedDocuments=false;return;}
+  uploadedDocuments=true;
+  $('#uploadList').innerHTML=valid.map(f=>`<div style="text-align:left;background:white;border:1px solid #dfe7ee;padding:9px;border-radius:7px;margin-top:7px;font-size:10px"><b>▧ ${esc(f.name)}</b><span style="float:right;color:#16845b">${(f.size/1024/1024).toFixed(2)} MB · ✓ Selected</span></div>`).join('');
+  toast('Documents selected successfully');
+}
+function simulateUpload(){
+  const files=[['invoice.pdf','1.2 MB'],['manufacturer-certificate.pdf','840 KB'],['instrument-photo.jpg','2.1 MB']];
+  uploadedDocuments=true;
+  $('#uploadList').innerHTML=files.map(f=>`<div style="text-align:left;background:white;border:1px solid #dfe7ee;padding:9px;border-radius:7px;margin-top:7px;font-size:10px"><b>▧ ${f[0]}</b><span style="float:right;color:#16845b">${f[1]} · ✓ Uploaded</span><div style="height:3px;background:#dce9f3;margin-top:7px"><div style="height:3px;width:100%;background:#16845b"></div></div></div>`).join('');
+  toast('Required demonstration documents uploaded');
+}
+
+// Fees & Payment (Legal Metrology advisory — indicative, category-wise)
+const FEES={
+  'Weighing Instrument':{amount:150,note:'Non-automatic weighing instrument — indicative verification/stamping fee'},
+  'Measuring Instrument':{amount:120,note:'Length / volumetric measuring instrument — indicative verification fee'},
+  'Retail Scale':{amount:100,note:'Retail scale up to 50 kg — indicative verification fee'},
+  'Industrial Scale':{amount:500,note:'Industrial / heavy-capacity scale — indicative verification fee'}
+};
+let paymentCompleted=false, selectedPaymentMethod='upi', currentFeeAmount=0;
+function getSelectedFee(){
+  const cat=$('#fCategory')?.value||'';
+  return FEES[cat]||{amount:150,note:'Indicative verification fee (default rate — select an instrument category for the exact advisory rate)'};
+}
+function updateFeeSummary(){
+  const cat=$('#fCategory')?.value||(currentSiteLang==='hi'?'— चयनित नहीं —':'— Not selected —');
+  const fee=getSelectedFee();
+  currentFeeAmount=fee.amount;
+  paymentCompleted=false;
+  $('#paymentStatusBox').innerHTML='';
+  $('#feeContinueBtn')?.classList.add('hidden');
+  $('#payNowBtn')?.classList.remove('hidden');
+  const hi=currentSiteLang==='hi';
+  $('#feesSummary').innerHTML=`<table class="lm-table"><thead><tr><th>${hi?'श्रेणी':'Category'}</th><th>${hi?'शुल्क का विवरण':'Fee basis'}</th><th>${hi?'देय शुल्क':'Fee payable'}</th></tr></thead><tbody><tr><td>${esc($('#fCategory')?.value||(hi?'चयन करें':'Not selected'))}</td><td>${esc(hi?'सरकारी सलाह के अनुसार अनुमानित दर':fee.note)}</td><td><b>₹${fee.amount}</b></td></tr></tbody></table>`;
+}
+function selectPaymentMethod(method){
+  selectedPaymentMethod=method;
+  $('#upiPayBox')?.classList.toggle('hidden',method!=='upi');
+  paymentCompleted=false;
+  $('#paymentStatusBox').innerHTML='';
+  $('#feeContinueBtn')?.classList.add('hidden');
+  $('#payNowBtn')?.classList.remove('hidden');
+}
+function payNow(){
+  const hi=currentSiteLang==='hi';
+  const fee=getSelectedFee();currentFeeAmount=fee.amount;
+  if(selectedPaymentMethod==='upi'){
+    const upiId=($('#fUpiId')?.value||'').trim();
+    const upiIdOK=/^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(upiId);
+    markInput('fUpiId',upiIdOK);
+    showFieldError('upiIdError',upiIdOK?'':(hi?'एक मान्य UPI ID दर्ज करें, जैसे name@bank':'Enter a valid UPI ID, e.g. name@bank'));
+    if(!upiIdOK){toast(hi?'कृपया मान्य UPI ID दर्ज करें':'Please enter a valid UPI ID');return;}
+    const id=(nextRegPreview());
+    const upiLink=`upi://pay?pa=wmsverify.gov@upi&pn=WMS%20Legal%20Metrology&am=${fee.amount}&cu=INR&tn=${encodeURIComponent('Fee for '+id)}`;
+    toast(hi?'आपके UPI ऐप/खाते पर रीडायरेक्ट किया जा रहा है…':'Redirecting to your UPI app / account…');
+    $('#paymentStatusBox').innerHTML=`<div class="risk low"><b>${hi?'UPI भुगतान आरंभ किया गया':'UPI payment initiated'}</b><br>${hi?'आपके डिफ़ॉल्ट UPI ऐप पर भेजा जा रहा है। यदि ऐप न खुले, तो नीचे दिए बटन से भुगतान की पुष्टि करें (डेमो)।':'Opening your default UPI app to complete this payment. If it does not open on this device, confirm the demo payment below.'}<br><button class="btn success" style="margin-top:10px" onclick="confirmPaymentDemo()">${hi?'भुगतान पूर्ण के रूप में चिह्नित करें (डेमो)':'Mark Payment Complete (Demo)'}</button></div>`;
+    try{ window.location.href=upiLink; }catch(e){}
+    setTimeout(()=>{ if(!paymentCompleted) toast(hi?'यदि UPI ऐप नहीं खुला, तो नीचे डेमो बटन का उपयोग करें':'If your UPI app did not open, use the demo button below'); },1800);
+  } else if(selectedPaymentMethod==='card'){
+    $('#paymentStatusBox').innerHTML=`<div class="risk low"><b>${hi?'कार्ड भुगतान गेटवे (डेमो)':'Card payment gateway (demo)'}</b><br>${hi?'यह एक प्रोटोटाइप है — किसी वास्तविक भुगतान गेटवे से कनेक्शन नहीं है।':'This is a prototype — no live payment gateway is connected.'}<br><button class="btn success" style="margin-top:10px" onclick="confirmPaymentDemo()">${hi?'भुगतान पूर्ण के रूप में चिह्नित करें (डेमो)':'Mark Payment Complete (Demo)'}</button></div>`;
+  } else {
+    $('#paymentStatusBox').innerHTML=`<div class="risk low"><b>${hi?'नेट बैंकिंग (डेमो)':'Net banking (demo)'}</b><br>${hi?'यह एक प्रोटोटाइप है — किसी वास्तविक बैंक गेटवे से कनेक्शन नहीं है।':'This is a prototype — no live bank gateway is connected.'}<br><button class="btn success" style="margin-top:10px" onclick="confirmPaymentDemo()">${hi?'भुगतान पूर्ण के रूप में चिह्नित करें (डेमो)':'Mark Payment Complete (Demo)'}</button></div>`;
+  }
+}
+function confirmPaymentDemo(){
+  paymentCompleted=true;
+  const hi=currentSiteLang==='hi';
+  const fee=getSelectedFee();
+  $('#paymentStatusBox').innerHTML=`<div class="verified"><div class="check">✓</div><div><strong>${hi?'भुगतान सफल':'Payment successful'}</strong><small>₹${fee.amount} · ${(selectedPaymentMethod||'').toUpperCase()} · ${hi?'रसीद संदर्भ जनरेट किया गया':'receipt reference generated'}</small></div></div>`;
+  $('#payNowBtn')?.classList.add('hidden');
+  $('#feeContinueBtn')?.classList.remove('hidden');
+  toast(hi?'भुगतान सफलतापूर्वक पूर्ण हुआ':'Payment completed successfully');
+}
+function nextRegPreview(){ return 'WMS-'+new Date().getFullYear()+'-PENDING'; }
+
+function collectApplication(){
+  return {
+    applicantName:$('#fName').value.trim(),
+    mobile:$('#fMobile').value.trim(),
+    email:$('#fEmail').value.trim(),
+    applicantType:$('#fApplicantType').value,
+    address:$('#fAddress').value.trim(),
+    state:$('#fState').value,
+    district:$('#fDistrict').value,
+    identity:$('#fIdentity').value.trim(),
+    instrumentName:$('#fInstrument').value.trim(),
+    category:$('#fCategory').value,
+    manufacturer:$('#fManufacturer').value.trim(),
+    model:$('#fModel').value.trim(),
+    serial:$('#fSerial').value.trim(),
+    manufacturingDate:$('#fManufacturingDate').value,
+    purchaseDate:$('#fPurchaseDate').value,
+    capacity:$('#fCapacity').value.trim(),
+    description:$('#fDescription').value.trim(),
+    feeAmount:currentFeeAmount,
+    paymentMethod:selectedPaymentMethod,
+    paymentStatus:paymentCompleted?'Paid (Demo)':'Unpaid',
+    upiId:selectedPaymentMethod==='upi'?($('#fUpiId')?.value||'').trim():''
+  };
+}
+
+function submitApplication(){
+  if(!$('#declare').checked){toast('Please accept the declaration');return;}
+  if(!paymentCompleted){toast('Please complete the fee payment before submitting');showStep(4);return;}
+  if(!validateStep1()||!validateStep2()||!uploadedDocuments)return;
+
+  const d=collectApplication();
+  const apps=getApps();
+  const id=nextRegistration();
+  const stamp=nowStamp();
+  const app={
+    id,...d,
+    status:'Pending Field Verification',
+    fieldOfficer:'Unassigned',
+    submitted:stamp,
+    verificationDate:'',
+    certificateNumber:'',
+    timeline:[
+      {label:'Application Submitted',time:stamp,done:true},
+      {label:'Documents Received',time:stamp,done:true},
+      {label:'Fee Payment',time:stamp+' · ₹'+d.feeAmount+' via '+(d.paymentMethod||'').toUpperCase()+' (Demo)',done:true},
+      {label:'Field Verification',time:'Awaiting officer assignment',done:false},
+      {label:'Officer Approval',time:'Pending field verification',done:false},
+      {label:'Certificate Issued',time:'Available only after approval',done:false}
+    ]
+  };
+  apps.push(app);
+  saveApps(apps);
+  lastSubmittedId=id;
+  paymentCompleted=false;selectedPaymentMethod='upi';currentFeeAmount=0;
+  closeModal('registerModal');
+  openModal('successModal');
+  $('#successModal .regno').textContent=id;
+  const hi=currentSiteLang==='hi';
+  const feeBox=$('#succFeeBox');
+  if(feeBox)feeBox.innerHTML=`<div class="check">✓</div><div><strong>₹${d.feeAmount} ${hi?'भुगतान प्राप्त हुआ':'fee received'}</strong><small>${(d.paymentMethod||'').toUpperCase()} · ${hi?'रसीद संदर्भ':'receipt ref'}: ${id}-FEE</small></div>`;
+  toast('Application submitted · field officer queue updated');
+}
+function trackApplicationByLast(){
+  closeModal('successModal'); openModal('trackModal');
+  if(lastSubmittedId)$('#trackInput').value=lastSubmittedId;
+  showTrack();
+}
+function downloadAcknowledgement(){toast('Acknowledgement prepared for prototype download');}
+
+// State -> district dependency
+function populateDistricts(){
+  const state=$('#fState'), district=$('#fDistrict');
+  if(!state||!district)return;
+  const list=DISTRICTS[state.value]||[];
+  district.innerHTML=list.length?'<option value="">Select District</option>'+list.map(d=>`<option>${esc(d)}</option>`).join(''):'<option value="">Select state first</option>';
+  district.disabled=!list.length;
+}
+
+// QR scanner
+function openScannerInstruction(){openModal('qrInstructionModal');}
+function startScanner(){
+  closeModal('qrInstructionModal'); openModal('qrScannerModal');
+  const video=$('#qrVideo'),status=$('#scannerStatus');
+  if(!navigator.mediaDevices?.getUserMedia){status.textContent='Camera access is unavailable on this browser.';return;}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false}).then(stream=>{
+    qrStream=stream; video.srcObject=stream; status.textContent='Camera ready · searching for QR';
+    if('BarcodeDetector' in window){
+      try{barcodeDetector=new BarcodeDetector({formats:['qr_code']});scanFrame();}
+      catch(e){status.textContent='Camera ready · use Demo Scan if needed.';}
+    } else status.textContent='Live camera ready · QR detection is not supported here. Use Demo Scan.';
+  }).catch(()=>{status.textContent='Camera permission was not granted. Use Demo Scan to continue.';toast('Camera permission unavailable');});
+}
+async function scanFrame(){
+  if(!qrStream||!barcodeDetector)return;
+  const video=$('#qrVideo');
+  try{
+    const codes=await barcodeDetector.detect(video);
+    if(codes.length){
+      const raw=codes[0].rawValue||'';
+      const match=raw.match(/(?:registration=|\/verify\/)([A-Za-z0-9-]+)/i);
+      const id=match?match[1]:(raw.match(/WMS-\d{4}-\d{5}/i)||[])[0];
+      stopScanner();closeModal('qrScannerModal');verifyPublicRecord(id||'','QR scan');return;
+    }
+  }catch(e){}
+  qrTimer=requestAnimationFrame(scanFrame);
+}
+function stopScanner(){
+  if(qrTimer)cancelAnimationFrame(qrTimer); qrTimer=null;
+  if(qrStream){qrStream.getTracks().forEach(t=>t.stop());qrStream=null;}
+  const v=$('#qrVideo');if(v)v.srcObject=null;
+}
+function demoScan(){
+  stopScanner();closeAllModals();
+  const verified=getApps().find(a=>a.status==='Verified'&&a.certificateNumber);
+  if(!verified){toast('Approve an application and generate its certificate before testing QR');return;}
+  verifyPublicRecord(verified.id,'Demo QR scan');go('verify');toast('QR detected · approved record loaded');
+}
+function verifyPublicRecord(id,source='Verification'){
+  const v=(id||'').trim().toUpperCase();
+  const app=getApps().find(a=>a.id===v||a.certificateNumber===v);
+  if(app&&app.status==='Verified'&&app.certificateNumber){renderPublicRecord(app,source);return;}
+  $('#verifyResult').innerHTML='<div style="margin-top:18px;background:#fff1f2;color:#7d2530;border:1px solid #efc3c8;padding:13px;border-radius:9px;font-size:12px"><b>Verification record not found or not yet approved</b><br><span>Only field-verified and officer-approved instruments with a generated certificate can be publicly verified.</span></div>';
+  toast('Record is not publicly verified yet');
+}
+function renderPublicRecord(r,source){
+  $('#verifyInput').value=r.id;
+  $('#verifyResult').innerHTML=`<div class="public-record"><div class="record-head"><div><h3>Instrument verified successfully</h3><small>${esc(source)} · Public verification record</small></div><span class="verified-badge">✓ VERIFIED</span></div><div class="record-grid"><div class="record-cell"><small>Registration Number</small><b>${esc(r.id)}</b></div><div class="record-cell"><small>Certificate Number</small><b>${esc(r.certificateNumber)}</b></div><div class="record-cell"><small>Instrument</small><b>${esc(r.instrumentName)}</b></div><div class="record-cell"><small>Category</small><b>${esc(r.category)}</b></div><div class="record-cell"><small>Manufacturer</small><b>${esc(r.manufacturer)}</b></div><div class="record-cell"><small>Model</small><b>${esc(r.model)}</b></div><div class="record-cell"><small>Serial Number</small><b>${esc(r.serial)}</b></div><div class="record-cell"><small>Capacity</small><b>${esc(r.capacity)}</b></div><div class="record-cell"><small>Verification Date</small><b>${esc(getValidityDetails(r).verificationDate||'—')}</b></div><div class="record-cell"><small>Valid Till</small><b>${esc(getValidityDetails(r).validTillText)}</b></div><div class="record-cell"><small>Verification Period</small><b>${esc(getValidityDetails(r).period.label)}</b></div><div class="record-cell"><small>Certificate Status</small><b style="color:var(--green)">Valid / Verified</b></div></div><div class="privacy-note">🔒 Public view only: applicant contact details are not exposed. Certificate availability follows field verification and officer approval.</div></div>`;
+  toast('Instrument verified successfully');
+}
+function verifyRecordValue(v){$('#verifyInput').value=v;verifyRecord();}
+function verifyRecord(){const v=$('#verifyInput').value.trim().toUpperCase();if(!v){toast('Enter a registration/certificate number');return;}verifyPublicRecord(v,'Number lookup');}
+
+// Application tracking
+function showTrack(){
+  const v=($('#trackInput')?.value||lastSubmittedId||'').trim().toUpperCase();
+  const app=getApps().find(a=>a.id===v||a.certificateNumber===v);
+  if(!app){$('#trackTimeline').innerHTML='<div class="risk low"><b>No current application found.</b><br>Submit a new application to start a live tracking record.</div>';return;}
+  $('#trackTimeline').innerHTML=`<div style="border:1px solid #dfe7ee;border-radius:9px;padding:18px"><div style="display:flex;justify-content:space-between"><div><b style="font:800 16px Manrope;color:var(--navy)">${esc(app.id)}</b><div style="font-size:10px;color:#7a8796;margin-top:4px">Current status: <span style="color:#956313;font-weight:800">${esc(app.status)}</span></div></div><span class="pill orange">LIVE</span></div><div class="timeline" style="margin-top:22px">${(app.timeline||[]).map(x=>`<div class="tl"><b>${x.done?'✓':'○'} ${esc(x.label)}</b><small>${esc(x.time)}</small></div>`).join('')}</div></div>`;
+}
+
+// Certificate + QR
+function openCertificate(){toast('Certificate is locked until field verification and officer approval.');}
+/* =========================================================
+   CERTIFICATE QR + PUBLIC VERIFICATION
+   The QR contains a compact, signed-by-workflow verification
+   payload and points back to THIS portal. When the portal is
+   hosted on HTTPS, Google Lens can open the URL and the page
+   automatically renders the certificate.
+   ========================================================= */
+
+const PUBLIC_VERIFY_BASE_URL =
+  (location.protocol === 'http:' || location.protocol === 'https:')
+    ? location.href.split('?')[0].split('#')[0]
+    : '';
+
+function base64UrlEncode(text){
+  return btoa(unescape(encodeURIComponent(text)))
+    .replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
+function base64UrlDecode(text){
+  const padded=text.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((text.length+3)%4);
+  return decodeURIComponent(escape(atob(padded)));
+}
+
+function compactCertificateData(r){
+  return {
+    c:r.certificateNumber,
+    r:r.id,
+    n:r.applicantName,
+    e:r.email,
+    a:r.address,
+    s:r.state,
+    d:r.district,
+    i:r.instrumentName,
+    g:r.category,
+    m:r.manufacturer,
+    o:r.model,
+    x:r.serial,
+    k:r.capacity,
+    v:r.verificationDate||nowStamp(),
+    t:getValidityDetails(r).validTillText,
+    p:getValidityDetails(r).period.label,
+    f:r.fieldOfficer,
+    q:r.approvedByEmail||r.fieldOfficerEmail||'',
+    b:r.approvedByName||'Authorized Field Officer'
+  };
+}
+
+function qrPayload(r){
+  const encoded=base64UrlEncode(JSON.stringify(compactCertificateData(r)));
+
+  // When the site is hosted, this is a real HTTPS URL back to
+  // the WMS verification page. Google Lens can open it directly.
+  if(PUBLIC_VERIFY_BASE_URL){
+    return `${PUBLIC_VERIFY_BASE_URL}?verify=${encoded}`;
+  }
+
+  // Local-file fallback: QR can still be generated, but a phone
+  // cannot open a file:// URL from another device. Host the portal
+  // on HTTPS for cross-device Lens verification.
+  return `https://YOUR-HOSTED-WMS-DOMAIN.example/verify?data=${encoded}`;
+}
+
+function makeCertificateQR(r){
+  const img=$('#certificateQR'),payload=$('#certificateQRPayload'),data=qrPayload(r);
+  if(payload){
+    payload.textContent = PUBLIC_VERIFY_BASE_URL
+      ? 'Scan with Google Lens → WMS verification page'
+      : 'Host this portal on HTTPS before cross-device QR testing';
+  }
+  if(img){
+    // Large PNG, high error correction and a quiet zone make the
+    // code much easier for Google Lens to capture.
+    img.src=`https://api.qrserver.com/v1/create-qr-code/?size=420x420&margin=16&ecc=H&format=png&data=${encodeURIComponent(data)}`;
+    img.style.width='220px';
+    img.style.height='220px';
+    img.style.objectFit='contain';
+    img.onerror=()=>{
+      img.alt='QR generation service unavailable';
+      if(r.id==='WMS-2026-00001') img.src='demo-qr.png';
+    };
+  }
+}
+
+function generateCertificate(id){
+  const apps=getApps(),r=apps.find(x=>x.id===id);
+  if(!r||r.status!=='Verified'){
+    toast('Certificate can only be generated after field verification and approval');
+    return;
+  }
+
+  r.certificateNumber=r.certificateNumber||
+    'WMS-CERT-'+new Date().getFullYear()+'-'+r.id.split('-').pop();
+
+  r.timeline=r.timeline.map(x=>x.label==='Certificate Issued'
+    ? {...x,time:nowStamp()+' · Generated',done:true}:x);
+
+  saveApps(apps);
+  populateCertificate(r);
+  openModal('certificateModal');
+  toast('Certificate generated · QR verification link created');
+}
+
+function populateCertificate(r){
+  const vals={
+    certNumberValue:r.certificateNumber,
+    certRegistrationValue:r.id,
+    certApplicantValue:r.applicantName,
+    certEmailValue:r.email,
+    certAddressValue:r.address,
+    certLocationValue:`${r.state} / ${r.district}`,
+    certInstrumentValue:r.instrumentName,
+    certCategoryValue:r.category,
+    certManufacturerValue:`${r.manufacturer} / ${r.model}`,
+    certSerialValue:r.serial,
+    certCapacityValue:r.capacity,
+    certDateValue:getValidityDetails(r).verificationDate,
+    certValidTillValue:getValidityDetails(r).validTillText,
+    certValidityPeriodValue:getValidityDetails(r).period.label,
+    certOfficerValue:r.fieldOfficer,
+    certSignature:r.approvedByName||((r.fieldOfficer&&r.fieldOfficer!=='Unassigned')
+      ?r.fieldOfficer.split('·')[0].trim():'Authorized Field Officer')
+  };
+
+  Object.entries(vals).forEach(([id,v])=>{
+    const el=$('#'+id);
+    if(el)el.textContent=v||'—';
+  });
+
+  const emailEl=$('#certOfficerEmail');
+  if(emailEl)emailEl.textContent=r.approvedByEmail||r.fieldOfficerEmail||'—';
+
+  makeCertificateQR(r);
+  window.currentCertificateRecord=r;
+}
+
+/* A self-contained certificate HTML file. The QR points back to
+   the hosted WMS portal and contains all public certificate data. */
+function certificateHTML(r){
+  const signature=r.approvedByName||
+    ((r.fieldOfficer&&r.fieldOfficer!=='Unassigned')
+      ?r.fieldOfficer.split('·')[0].trim():'Authorized Field Officer');
+
+  const qr=qrPayload(r);
+  const qrImg=`https://api.qrserver.com/v1/create-qr-code/?size=420x420&margin=16&ecc=H&format=png&data=${encodeURIComponent(qr)}`;
+
+  return `<!doctype html><html><head><meta charset="utf-8">
+  <title>${esc(r.certificateNumber)}</title>
+  <style>
+  body{font-family:Arial,sans-serif;background:#f4f6f8;padding:30px;color:#122033}
+  .sheet{max-width:800px;margin:auto;background:#fffef9;border:8px double #d6c27d;padding:35px}
+  .center{text-align:center}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:30px}
+  .grid b{display:block;margin-bottom:4px}.sig{font-family:cursive;font-size:28px;color:#173d63;margin-top:25px}
+  .qr{width:180px;height:180px;object-fit:contain}.qrbox{text-align:center}
+  .success{color:#16845b;font-weight:800}
+  </style></head><body><div class="sheet">
+  <div class="center"><div>GOI</div><h1>ONLINE VERIFICATION CERTIFICATE</h1>
+  <div>PROTOTYPE / DEMONSTRATION CERTIFICATE</div></div>
+  <div class="grid">
+  <div><b>Certificate Number</b>${esc(r.certificateNumber)}</div>
+  <div><b>Registration Number</b>${esc(r.id)}</div>
+  <div><b>Applicant Name</b>${esc(r.applicantName)}</div>
+  <div><b>Applicant Email</b>${esc(r.email)}</div>
+  <div><b>Address</b>${esc(r.address)}</div>
+  <div><b>State / District</b>${esc(r.state)} / ${esc(r.district)}</div>
+  <div><b>Instrument</b>${esc(r.instrumentName)}</div>
+  <div><b>Category</b>${esc(r.category)}</div>
+  <div><b>Manufacturer / Model</b>${esc(r.manufacturer)} / ${esc(r.model)}</div>
+  <div><b>Serial Number</b>${esc(r.serial)}</div>
+  <div><b>Capacity</b>${esc(r.capacity)}</div>
+  <div><b>Verification Date</b>${esc(getValidityDetails(r).verificationDate)}</div>
+  <div><b>Valid Till</b>${esc(getValidityDetails(r).validTillText)}</div>
+  <div><b>Verification Period</b>${esc(getValidityDetails(r).period.label)}</div>
+  <div><b>Status</b><span class="success">VERIFIED / APPROVED</span></div>
+  <div><b>Authorized Field Officer</b>${esc(r.fieldOfficer)}<br>${esc(r.approvedByEmail||r.fieldOfficerEmail||'')}</div>
+  </div>
+  <div class="sig">${esc(signature)}</div>
+  <div>Digital Signature — Authenticated by Authorized Field Officer</div>
+  <div class="qrbox"><img class="qr" src="${qrImg}" alt="Certificate verification QR">
+  <p>Scan this QR with Google Lens to open the WMS verification page.</p></div>
+  <p>This is a prototype/demonstration certificate and has no legal validity.</p>
+  </div></body></html>`;
+}
+
+function downloadCertificate(){
+  const r=window.currentCertificateRecord;
+  if(!r){toast('Generate a certificate first');return;}
+
+  const blob=new Blob([certificateHTML(r)],{type:'text/html'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=`${r.certificateNumber}.html`;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast('Certificate downloaded with QR code');
+}
+
+/* Email is intentionally handled through the user's mail app.
+   The browser cannot silently send mail or attach files without
+   a backend/email service. The message is pre-filled with the
+   requested congratulations text and certificate details. */
+async function emailCertificate(){
+  const r=window.currentCertificateRecord;
+  if(!r||!r.email){toast('Applicant email is missing');return;}
+
+  const subject=`Congratulations! Your WMS Verification Certificate — ${r.certificateNumber}`;
+  const body=[
+    `Congratulations ${r.applicantName}!`,
+    '',
+    'Your Weighing & Measuring Instrument application has successfully completed field verification and officer approval.',
+    '',
+    `Certificate Number: ${r.certificateNumber}`,
+    `Registration Number: ${r.id}`,
+    `Instrument: ${r.instrumentName}`,
+    `Serial Number: ${r.serial}`,
+    `Verification Status: VERIFIED / APPROVED`,
+    `Authorized Field Officer: ${r.fieldOfficer}`,
+    '',
+    'Your digital certificate is ready.',
+    'Please use the certificate download/share option in the WMS portal to attach the certificate to this email.',
+    '',
+    'QR Verification:',
+    qrPayload(r),
+    '',
+    'Congratulations once again!',
+    '',
+    'WMS Verification Portal — SIH Prototype / Demonstration System.'
+  ].join('\n');
+
+  const fileBlob=new Blob([certificateHTML(r)],{type:'text/html'});
+  const file=new File([fileBlob],`${r.certificateNumber}.html`,{type:'text/html'});
+
+  // On supported phones, share the actual certificate file to Gmail/Email.
+  if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+    try{
+      await navigator.share({
+        title:subject,
+        text:body,
+        files:[file]
+      });
+      toast('Certificate shared — choose Gmail/Email to send it');
+      return;
+    }catch(e){
+      if(e&&e.name==='AbortError')return;
+    }
+  }
+
+  // Desktop fallback: open the applicant's email address with
+  // a congratulations message. The downloaded certificate can
+  // be attached manually.
+  const mailto=`mailto:${encodeURIComponent(r.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href=mailto;
+  toast('Email composer opened with congratulations message');
+}
+
+function openGoogleVerification(){
+  const r=window.currentCertificateRecord;
+  if(!r){toast('Generate a certificate first');return;}
+  const url=qrPayload(r);
+  if(PUBLIC_VERIFY_BASE_URL){
+    window.open(url,'_blank','noopener');
+  }else{
+    toast('Host the portal on HTTPS before testing the QR on a phone');
+  }
+}
+
+/* When a QR opens the hosted portal with ?verify=..., decode the
+   embedded certificate data and show the public verification page. */
+function openVerificationFromURL(){
+  const params=new URLSearchParams(location.search);
+  const encoded=params.get('verify');
+  if(!encoded)return;
+
+  try{
+    const d=JSON.parse(base64UrlDecode(encoded));
+    const r={
+      id:d.r,certificateNumber:d.c,applicantName:d.n,email:d.e,address:d.a,
+      state:d.s,district:d.d,instrumentName:d.i,category:d.g,
+      manufacturer:d.m,model:d.o,serial:d.x,capacity:d.k,
+      verificationDate:d.v,fieldOfficer:d.f,
+      approvedByEmail:d.q,approvedByName:d.b,status:'Verified'
+    };
+
+    // Public certificate view intentionally omits private contact
+    // fields from the verification result.
+    renderPublicRecord(r,'QR scan');
+    go('verify');
+    setTimeout(()=>toast('QR verified — certificate opened from WMS portal'),300);
+  }catch(e){
+    console.error('Invalid QR verification payload',e);
+    toast('Invalid verification QR');
+  }
+}
+
+// Live officer table and KPI cards
+function renderApplications(){
+  const apps=getApps(); const tbody=$('#appRows'); if(!tbody)return;
+  tbody.innerHTML=apps.length?apps.map(r=>`<tr><td><b>${esc(r.id)}</b></td><td>${esc(r.applicantName)}</td><td>${esc(r.instrumentName)}</td><td>${esc(r.category)}</td><td>${esc(r.manufacturer)}</td><td>${esc(r.serial||'—')}</td><td><span class="pill ${r.status==='Verified'?'green':r.status==='Rejected'?'red':'orange'}">${esc(r.status)}</span></td><td>${esc(r.submitted)}</td><td><button class="row-action" onclick="openDrawer('${esc(r.id)}')">View</button></td></tr>`).join(''):`<tr><td colspan="9" style="text-align:center;padding:38px;color:#7b8795">No applications yet. New citizen submissions will appear here automatically.</td></tr>`;
+  const pending=apps.filter(a=>a.status==='Pending Field Verification').length;
+  const assigned=apps.filter(a=>a.fieldOfficer&&a.fieldOfficer!=='Unassigned'&&a.status!=='Verified'&&a.status!=='Rejected').length;
+  const verified=apps.filter(a=>a.status==='Verified').length;
+  const certs=apps.filter(a=>a.certificateNumber).length;
+  const rejected=apps.filter(a=>a.status==='Rejected').length;
+  const kpis={kpiPending:pending,kpiVerified:verified,kpiRejected:rejected,kpiCertificates:certs};
+  Object.entries(kpis).forEach(([id,n])=>{const el=$('#'+id);if(el)el.textContent=n;});
+  if($('#livePending'))$('#livePending').textContent=pending;
+  if($('#liveAssigned'))$('#liveAssigned').textContent=assigned;
+  if($('#liveVerified'))$('#liveVerified').textContent=verified;
+  if($('#liveCertificates'))$('#liveCertificates').textContent=certs;
+}
+
+function openDrawer(id){
+  const r=getApps().find(x=>x.id===id);if(!r)return;
+  $('#drawerTitle').textContent=id;
+  const pendingLike = r.status==='Pending' || r.status==='Pending Field Verification' || r.status==='On Hold';
+  const canReject = pendingLike;
+  const isRejected = r.status==='Rejected';
+  const rejectionHtml = isRejected ? `<div class="detail-section"><h4>Rejection Decision</h4><div class="rejection-box"><strong>Application rejected</strong><div class="rejection-meta"><div><small>Reason</small><b>${esc(r.rejectionReason||'Not specified')}</b></div><div><small>Officer</small><b>${esc(r.rejectedByName||'Authorized Field Officer')}</b></div><div><small>Date & Time</small><b>${esc(r.rejectedAt||'—')}</b></div><div><small>Remarks</small><b>${esc(r.rejectionRemarks||'—')}</b></div></div></div></div>` : '';
+  const actionHtml = isRejected
+    ? `<button class="btn primary" onclick="reopenApplication('${esc(id)}')">Reopen / Reassign for Correction</button><button class="btn secondary" onclick="closeDrawer()">Close</button>`
+    : `<button class="btn secondary" onclick="requestInfo('${esc(id)}')">Request Information</button>${canReject?`<button class="danger-btn" onclick="openReject('${esc(id)}')">Reject Application</button>`:''}${r.status!=='Verified'?`<button class="btn primary" onclick="fieldVerify('${esc(id)}')">Complete Field Verification & Approval</button>`:''}${r.status==='Verified'?`<button class="btn success" onclick="generateCertificate('${esc(id)}')">Generate Certificate + QR</button>`:''}<button class="btn secondary" onclick="closeDrawer()">Close</button>`;
+  $('#drawerContent').innerHTML=`<div class="detail-section"><h4>Field Verification Assignment</h4><div class="form-grid"><div class="field"><label>Field Officer</label><select id="fieldOfficerSelect" ${isRejected?'disabled':''}><option ${r.fieldOfficer==='Unassigned'?'selected':''}>Unassigned</option><option ${r.fieldOfficer==='FO-DEL-001 · Delhi Field Unit'?'selected':''}>FO-DEL-001 · Delhi Field Unit</option><option ${r.fieldOfficer==='FO-DEL-002 · Central Field Unit'?'selected':''}>FO-DEL-002 · Central Field Unit</option><option ${r.fieldOfficer==='FO-DEL-003 · District Field Unit'?'selected':''}>FO-DEL-003 · District Field Unit</option></select></div></div>${!isRejected?`<button class="btn secondary" onclick="assignFieldOfficer('${esc(id)}')">Assign Officer</button>`:''}</div><div class="detail-section"><h4>Application & Instrument</h4><div class="detail-grid"><div>Applicant</div><div>${esc(r.applicantName)}</div><div>State / District</div><div>${esc(r.state)} / ${esc(r.district)}</div><div>Instrument</div><div>${esc(r.instrumentName)}</div><div>Category</div><div>${esc(r.category)}</div><div>Manufacturer</div><div>${esc(r.manufacturer)}</div><div>Model</div><div>${esc(r.model)}</div><div>Serial</div><div>${esc(r.serial)}</div><div>Capacity</div><div>${esc(r.capacity)}</div><div>Fee Paid</div><div>₹${esc(r.feeAmount||'—')} · ${esc((r.paymentMethod||'').toUpperCase()||'—')} · ${esc(r.paymentStatus||'—')}</div><div>Status</div><div><span class="pill ${r.status==='Verified'?'green':r.status==='Rejected'?'red':'orange'}">${esc(r.status)}</span></div></div></div>${rejectionHtml}<div class="detail-section"><h4>Verification Workflow</h4><div class="timeline">${(r.timeline||[]).map(x=>`<div class="tl"><b>${x.done?'✓':'○'} ${esc(x.label)}</b><small>${esc(x.time)}</small></div>`).join('')}</div></div><div class="modal-actions">${actionHtml}</div>`;
+  $('#drawer').classList.add('show');
+}
+function closeDrawer(){$('#drawer').classList.remove('show');}
+function assignFieldOfficer(id){
+  const apps=getApps(),r=apps.find(x=>x.id===id);if(!r)return;
+  r.fieldOfficer=$('#fieldOfficerSelect').value;
+  r.fieldOfficerEmail = r.fieldOfficer==='Unassigned' ? '' : (r.fieldOfficer==='FO-DEL-001 · Delhi Field Unit' ? 'delhi.field@wms.gov.in' : r.fieldOfficer==='FO-DEL-002 · Central Field Unit' ? 'central.field@wms.gov.in' : 'district.field@wms.gov.in');
+  r.timeline=r.timeline.map(x=>x.label==='Field Verification'?{...x,time:r.fieldOfficer==='Unassigned'?'Awaiting officer assignment':'Assigned to '+r.fieldOfficer,done:false}:x);
+  saveApps(apps);openDrawer(id);toast('Field officer assignment updated');
+}
+function requestInfo(id){
+  const apps=getApps(),r=apps.find(x=>x.id===id);if(!r)return;
+  r.status='On Hold';
+  r.timeline=r.timeline.map(x=>x.label==='Field Verification'?{...x,time:'On Hold · additional information requested',done:false}:x);
+  saveApps(apps);openDrawer(id);toast('Additional information requested');
+}
+function openReject(id){
+  const r=getApps().find(x=>x.id===id);if(!r)return;
+  const allowed=r.status==='Pending'||r.status==='Pending Field Verification'||r.status==='On Hold';
+  if(!allowed){toast('Rejection is available only for Pending or On Hold applications');return;}
+  $('#rejectReason').value='';$('#rejectRemarks').value='';$('#rejectReasonError').textContent='';$('#rejectRemarksError').textContent='';
+  $('#rejectReason').dataset.applicationId=id;toggleRejectRemarks();openModal('rejectionModal');
+}
+function toggleRejectRemarks(){
+  const other=$('#rejectReason')?.value==='Other';
+  if($('#remarksRequiredLabel'))$('#remarksRequiredLabel').textContent=other?'*':'';
+  if($('#rejectRemarks'))$('#rejectRemarks').placeholder=other?'Please explain the rejection reason (required)':'Add remarks for the applicant / record';
+}
+function confirmReject(){
+  const id=$('#rejectReason')?.dataset.applicationId;const reason=$('#rejectReason')?.value;const remarks=($('#rejectRemarks')?.value||'').trim();
+  if(!id)return;
+  let valid=true;
+  $('#rejectReasonError').textContent='';$('#rejectRemarksError').textContent='';
+  if(!reason){$('#rejectReasonError').textContent='Please select a rejection reason.';valid=false;}
+  if(reason==='Other'&&!remarks){$('#rejectRemarksError').textContent='Remarks are mandatory when reason is Other.';valid=false;}
+  if(!valid)return;
+  const apps=getApps(),r=apps.find(x=>x.id===id);if(!r)return;
+  const ts=nowStamp();
+  r.status='Rejected';r.rejectionReason=reason;r.rejectionRemarks=remarks;r.rejectedByName='Demo Officer · Delhi Field Unit';r.rejectedByEmail=sessionStorage.getItem('wmsOfficerEmail')||'officer@wms.gov.in';r.rejectedAt=ts;
+  r.timeline=(r.timeline||[]).map(x=>x.label==='Field Verification'?{...x,time:'Rejected · '+reason,done:false}:x);
+  r.timeline.push({label:'Officer Rejection',time:ts+' · '+reason,done:true});
+  saveApps(apps);closeModal('rejectionModal');closeDrawer();renderApplications();toast('Application rejected and decision recorded');
+}
+function reopenApplication(id){
+  const apps=getApps(),r=apps.find(x=>x.id===id);if(!r)return;
+  if(r.status!=='Rejected'){toast('Only rejected applications can be reopened');return;}
+  r.status='On Hold';r.reopenedAt=nowStamp();
+  r.timeline=(r.timeline||[]).map(x=>x.label==='Officer Rejection'?{...x,time:(r.rejectedAt||'')+' · Rejected: '+(r.rejectionReason||'Recorded decision'),done:true}:x);
+  r.timeline.push({label:'Application Reopened',time:r.reopenedAt+' · Returned for correction / reassignment',done:true});
+  saveApps(apps);openDrawer(id);toast('Application reopened and moved to On Hold');
+}
+
+function fieldVerify(id){
+  const apps=getApps(),r=apps.find(x=>x.id===id);if(!r)return;
+  if(r.fieldOfficer==='Unassigned'){toast('Assign a field officer before completing verification');return;}
+  r.status='Verified'; r.verificationDate=nowStamp();
+  r.approvedByEmail=sessionStorage.getItem('wmsOfficerEmail')||r.fieldOfficerEmail||'authorized.officer@wms.gov.in';
+  r.approvedByName=(r.fieldOfficer&&r.fieldOfficer!=='Unassigned')?r.fieldOfficer.split('·')[0].trim():'Authorized Field Officer';
+  r.timeline=r.timeline.map(x=>x.label==='Field Verification'?{...x,time:r.verificationDate+' · Completed by '+r.fieldOfficer,done:true}:x.label==='Officer Approval'?{...x,time:'Approved after successful field verification',done:true}:x);
+  saveApps(apps);openDrawer(id);toast('Field verification completed · application approved');
+}
+
+// Footer information
+function showHelp(){
+  const hi=currentSiteLang==='hi';
+  $('#infoTitle').textContent=hi?'सहायता एवं उपयोगकर्ता मार्गदर्शिका':'Help & User Guide';
+  $('#infoBody').innerHTML=hi
+    ?'<p><b>पंजीकरण:</b> सभी आवश्यक आवेदक और उपकरण फ़ील्ड पूर्ण करें। मोबाइल नंबर 10 अंकों का होना चाहिए और ईमेल मान्य होना चाहिए।</p><p><b>जिला:</b> पहले राज्य चुनें; जिला सूची स्वतः अपडेट हो जाएगी।</p><p><b>क्षेत्रीय सत्यापन:</b> एक अधिकृत फील्ड अधिकारी नियुक्त किया जाता है जो भौतिक उपकरण का सत्यापन करता है।</p><p><b>शुल्क:</b> दस्तावेज़ अपलोड के बाद, उपकरण श्रेणी के अनुसार निर्धारित शुल्क का भुगतान करना आवश्यक है।</p><p><b>प्रमाणपत्र:</b> इसे सीधे अपलोड या जारी नहीं किया जा सकता। यह केवल सफल क्षेत्रीय सत्यापन और अधिकारी अनुमोदन के बाद ही उपलब्ध होता है।</p><p><b>QR:</b> अनुमोदित प्रमाणपत्र को सत्यापन संदर्भ वाला वास्तविक QR कोड प्राप्त होता है।</p>'
+    :'<p><b>Register:</b> Complete all required applicant and instrument fields. Mobile number must be 10 digits and email must be valid.</p><p><b>District:</b> Select a state first; the district list updates automatically.</p><p><b>Field verification:</b> An authorized field officer is assigned and verifies the physical instrument.</p><p><b>Fees:</b> After documents are uploaded, the applicable government fee for the selected instrument category must be paid.</p><p><b>Certificate:</b> It cannot be uploaded or issued directly. It becomes available only after successful field verification and officer approval.</p><p><b>QR:</b> The approved certificate receives a real QR code containing the verification reference.</p>';
+  openModal('infoModal');
+}
+function showAbout(){
+  const hi=currentSiteLang==='hi';
+  $('#infoTitle').textContent=hi?'प्रोटोटाइप के बारे में':'About the Prototype';
+  $('#infoBody').innerHTML=hi
+    ?'<p>यह SIH प्रोटोटाइप उपकरण पंजीकरण, क्षेत्रीय सत्यापन, शुल्क भुगतान, प्रमाणपत्र जारी करने और सार्वजनिक QR सत्यापन के लिए एक पारदर्शी डिजिटल वर्कफ़्लो प्रदर्शित करता है।</p><p class="gov-notice">प्रोटोटाइप / डेमो प्रणाली — यह कोई आधिकारिक भारत सरकार वेबसाइट नहीं है।</p>'
+    :'<p>This SIH prototype demonstrates a transparent digital workflow for instrument registration, field verification, fee payment, certificate issuance and public QR verification.</p><p class="gov-notice">Prototype / Demonstration System — not an official Government of India website.</p>';
+  openModal('infoModal');
+}
+function showPrivacy(){
+  const hi=currentSiteLang==='hi';
+  $('#infoTitle').textContent=hi?'गोपनीयता':'Privacy';
+  $('#infoBody').innerHTML=hi?'<p>सार्वजनिक सत्यापन केवल अधिकृत उपकरण जानकारी दिखाता है। आवेदक के संपर्क विवरण सार्वजनिक QR सत्यापन रिकॉर्ड में नहीं दिखाए जाते।</p>':'<p>Public verification exposes only authorized instrument information. Applicant contact details are not shown in the public QR verification record.</p>';
+  openModal('infoModal');
+}
+function showContact(){
+  const hi=currentSiteLang==='hi';
+  $('#infoTitle').textContent=hi?'संपर्क करें':'Contact';
+  $('#infoBody').innerHTML=hi?'<p><b>WMS सत्यापन सहायता</b></p><p>यह प्रोटोटाइप केवल डेमो संपर्क जानकारी का उपयोग करता है। उत्पादन में, पोर्टल संबंधित विभाग, हेल्पलाइन और आधिकारिक शिकायत चैनल प्रदर्शित करेगा।</p>':'<p><b>WMS Verification Support</b></p><p>This prototype uses demonstration contact information only. In production, the portal would display the responsible department, helpline and official grievance channels.</p>';
+  openModal('infoModal');
+}
+function showSitemap(){
+  const hi=currentSiteLang==='hi';
+  $('#infoTitle').textContent=hi?'साइटमैप':'Sitemap';
+  $('#infoBody').innerHTML=hi?'<p>होम · सेवाएं · उपकरण सत्यापित करें · QR सत्यापन · आवेदन ट्रैक करें · फील्ड अधिकारी पोर्टल</p>':'<p>Home · Services · Verify Instrument · QR Verification · Track Application · Field Officer Portal</p>';
+  openModal('infoModal');
+}
+
+// Cross-tab live synchronization
+setInterval(()=>{ if($('#dashboard') && $('#dashboard').style.display!=='none') renderApplications(); }, 1500);
+window.addEventListener('storage',e=>{
+  if(e.key===STORE_KEY){
+    renderApplications();
+    if($('#dashboard').style.display!=='none')toast('New application data received');
+  }
+});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAllModals();closeDrawer();stopScanner();}});
+
+function setDateLimits(){
+  const today=new Date().toISOString().slice(0,10);
+  ['fManufacturingDate','fPurchaseDate'].forEach(id=>{const el=$('#'+id);if(el)el.max=today;});
+}
+function exportApplicationsCSV(){
+  const apps=getApps();
+  if(!apps.length){toast('No applications available to export');return;}
+  const headers=['Registration No.','Applicant','Mobile','Email','State','District','Instrument','Category','Manufacturer','Model','Serial','Status','Field Officer','Submitted','Verification Date','Certificate Number','Rejection Reason','Rejection Remarks','Rejected By','Rejected At'];
+  const rows=apps.map(a=>[a.id,a.applicantName,a.mobile,a.email,a.state,a.district,a.instrumentName,a.category,a.manufacturer,a.model,a.serial,a.status,a.fieldOfficer,a.submitted,a.verificationDate,a.certificateNumber,a.rejectionReason,a.rejectionRemarks,a.rejectedByName,a.rejectedAt]);
+  const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='wms-live-applications.csv';a.click();URL.revokeObjectURL(url);toast('CSV export generated');
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  renderApplications();
+  $('#fState')?.addEventListener('change',populateDistricts);
+  $('#fMobile')?.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,10);});
+  $('#fEmail')?.addEventListener('blur',()=>{const ok=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('#fEmail').value.trim());markInput('fEmail',ok);});
+  $('#fState')?.dispatchEvent(new Event('change'));
+  setDateLimits();
+  openVerificationFromURL();
+});
+
+/* NEW: skip-to-content link + EN/हिंदी language switcher (demo scope: header, hero, utility bar) */
+const i18nDict={
+  en:{
+    topGoi:'Government of India  |  Digital India',skip:'Skip to main content',brandTitle:'Government of India',brandSub:'Online Verification System for Weighing & Measuring Instruments',navHome:'Home',navServices:'Services',navVerify:'Verify',navTrack:'Track Application',navHelp:'Help',officerBtn:'Field Officer Portal',heroEyebrow:'Digital Governance • Prototype',heroTitle:'Digital Verification for Weighing & Measuring Instruments',heroSub:'A secure and transparent digital platform for registration, verification and certification of measuring instruments.',btnRegister:'Register Instrument →',btnVerify:'Verify Certificate',btnScan:'⌁ Scan QR',btnTrack:'Track Application',heroDemo:'Prototype / Demonstration System · No real identity or official certificate data is collected.',
+    noticeImportant:'Important:',noticeText:'This is a prototype/demonstration system for the Smart India Hackathon and is not an official Government of India website.',
+    svcEyebrow:'Services',svcTitle:'One platform. Every verification step.',svcSub:'Designed for citizens, manufacturers, verification officers and the public verification journey.',
+    svc1Title:'Register Instrument',svc1Body:'Submit applicant, instrument and supporting information through a guided digital application.',
+    svc2Title:'Verify Instrument',svc2Body:'Check a registration or certificate number and view appropriate public verification details.',
+    svc3Title:'Track Application',svc3Body:'Follow application progress from submission to officer review and certificate issue.',
+    svc4Title:'Certificate Verification',svc4Body:'Validate the authenticity and status of a digitally issued demonstration certificate.',
+    svc5Title:'QR Verification',svc5Body:'Scan a verified instrument QR and instantly view its public authenticity and instrument details.',svc5Btn:'Open QR Scanner →',
+    svc6Title:'Certificate Issuance',svc6Body:'Certificate becomes available only after successful field verification and officer approval. No direct certificate upload or issue is allowed.',
+    statSystem:'System Status',statOperational:'Operational',statDatabase:'Database',statConnected:'Connected',statVerifyService:'Verification Service',statOperational2:'Operational',statLastUpdated:'Last Updated',statDemoNote:'Demo status shown for the prototype. Production deployment should source this state from live services.',
+    howEyebrow:'How it works',howTitle:'From registration to trusted verification.',
+    how1Title:'Registration',how1Body:'Applicant starts an application.',
+    how2Title:'Instrument Details',how2Body:'Record model, serial and capacity.',
+    how3Title:'Document Submission',how3Body:'Upload supporting documents.',
+    how4Title:'Fees & Payment',how4Body:'Pay the applicable government verification fee.',
+    how5Title:'Officer Verification',how5Body:'Review and validate the record.',
+    how6Title:'Certificate Issued',how6Body:'Generate a digital certificate.',
+    how7Title:'QR Verification',how7Body:'Public authenticity check.',
+    verEyebrow:'Public verification',verTitle:'Verify an instrument',verSub:'Enter a registration or certificate number. Only appropriate public information is displayed.',verInputPh:'e.g. WMS-2026-00001',verBtn:'Verify',verScanBtn:'⌁ Scan QR Code',verScanHelp:'Point your camera at the QR printed on a verified instrument or certificate.',
+    verPrinciples:'Public verification principles',verP1:'Personal information',verP1v:'Protected',verP2:'QR data',verP2v:'Reference only',verP3:'Verification',verP3v:'Server-backed',verP4:'Certificate status',verP4v:'Live record',
+    ftBrand:'Online Verification System',ftBrandBody:'A prototype e-governance experience for registration, field verification and QR-based public verification.',ftPrototype:'PROTOTYPE / DEMONSTRATION SYSTEM',
+    ftServices:'Services',ftS1:'Register Instrument',ftS2:'Verify Instrument',ftS3:'QR Verification',ftS4:'Track Application',
+    ftInfo:'Information',ftI1:'About',ftI2:'Help',ftI3:'Contact',ftI4:'Privacy',
+    ftOfficer:'Field Officer',ftO1:'Field Officer Portal',ftO2:'Field Verification',ftO3:'Home',ftO4:'Sitemap',
+    ftBottom:'Prototype / Demonstration System · Not an official Government of India website · Built for SIH demonstration purposes',
+    regTitle:'Register Instrument',sf1:'01 Applicant',sf2:'02 Instrument',sf3:'03 Documents',sf4:'04 Fees & Payment',sf5:'05 Declaration',sf6:'06 Submit',
+    lblName:'Applicant Name',phName:'Applicant full name',lblMobile:'Mobile Number',lblEmail:'Email',lblApplicantType:'Applicant Type',optSelectType:'Select applicant type',optBusiness:'Business / Organization',optIndividual:'Individual',optManufacturer:'Manufacturer',
+    lblAddress:'Address',phAddress:'Registered address',lblState:'State',optSelectState:'Select State',lblDistrict:'District',optSelectStateFirst:'Select state first',
+    lblIdentity:'Identity Verification Reference',noteIdentity:'Demo identity verification. Do not enter real Aadhaar information.',
+    btnCancel:'Cancel',btnContinue:'Continue →',btnBack:'← Back',
+    lblInstrument:'Instrument Name',lblCategory:'Category',optSelectCategory:'Select category',catWeighing:'Weighing Instrument',catMeasuring:'Measuring Instrument',catRetail:'Retail Scale',catIndustrial:'Industrial Scale',
+    lblManufacturer:'Manufacturer',lblModel:'Model Number',lblSerial:'Serial Number',lblManufacturingDate:'Manufacturing Date',lblPurchaseDate:'Purchase Date',lblCapacity:'Capacity',
+    lblAccuracy:'Accuracy Class',optSelectAccuracy:'Select accuracy class',lblUnit:'Unit',optSelectUnit:'Select unit',lblDescription:'Description',
+    uploadTitle:'Drag and drop documents here',uploadTypes:'Invoice · Manufacturer certificate · Instrument photograph · Supporting documents',btnChooseDocs:'Choose Documents',btnDemoFiles:'Use Demo Files',
+    feeAdvisoryNote:'Fees shown below are indicative, as per the Legal Metrology (General) Rules, 2011 (Second Schedule) fee advisory. Every instrument category attracts a different verification/stamping fee; the exact rate notified by your State Legal Metrology authority may vary.',
+    lblPaymentMethod:'Select Payment Method',payCard:'💳 Debit / Credit Card',payUPI:'📲 UPI',payNetBanking:'🏦 Net Banking',lblUpiId:'Your UPI ID',phUpiId:'yourname@upi',noteUpiRedirect:'Prototype: on clicking Pay Now, you will be redirected to your UPI app / bank account to complete this payment.',btnPayNow:'Pay Now →',
+    preCheckTitle:'✓ Pre-submission validation passed',preCheckBody:'Required fields present. Duplicate serial check is simulated for this prototype.',declText:'Declaration: I confirm that the information supplied in this prototype application is for demonstration purposes only.',declAgree:'I agree to the demonstration declaration.',btnSubmit:'Submit Application',
+    succEyebrow:'Submission complete',succTitle:'Application Submitted Successfully',succSub:'Your prototype application has entered the officer verification workflow.',succRegNo:'Registration Number',btnViewApp:'View Application',btnDownloadAck:'Download Acknowledgement',btnTrackApp:'Track Application',
+    loginTitle:'Field Officer Login',loginSubtitle:'Secure Field Officer Authentication',loginAuthOnly:'Authorized officers only',lblOfficialEmail:'Official Email Address',phOfficerEmail:'Enter officer email',lblPassword:'Password',phPassword:'Enter password',loginDemoCreds:'Demo credentials',loginDemoNote:'For SIH demonstration only. Production deployment should use secure server-side authentication.',btnAuthenticate:'Authenticate & Open Portal →',
+    trackTitle:'Track Application',lblRegOrApp:'Registration / Application Number',btnTrackShort:'Track',
+    qriEyebrow:'Public QR verification',qriTitle:'Before you scan',qriSafe:'Scan safely. Verify instantly.',qriSafeBody:'The QR should open a WMS verification reference. Never share private applicant information through a QR code.',
+    qri1Title:'Allow camera access',qri1Body:'Tap "Start Camera" and allow your browser to use the camera when prompted.',
+    qri2Title:'Place the QR inside the frame',qri2Body:'Keep the QR flat, well-lit and centered. Hold the phone steady for a moment.',
+    qri3Title:'Review the verified record',qri3Body:'After detection, the system shows only public instrument and certificate information.',
+    qriTipLabel:'Demo tip:',qriTipBody:'If camera scanning is unavailable on this device, use the demo scan button to experience the complete verification flow.',
+    btnStartScanner:'Start QR Scanner →',btnDemoQR:'Use Demo QR',
+    offBrandSub:'Field Officer Operations Portal',offHome:'⌂ Home',offServices:'▤ Services',offApplications:'▦ Applications',offVerification:'✓ Verification',offCertificates:'▣ Certificates',offQR:'⌁ QR Verification',offReports:'◫ Reports',offAudit:'≡ Audit Logs',offCitizenPortal:'← Citizen Portal',offLogout:'Logout',
+    offConsole:'Field officer console',offDashTitle:'Field Verification Dashboard',offDashSub:'Live applications from the current citizen session',offRoleTitle:'Field Verification Officer',offRoleSub:'Demo Officer · Delhi Field Unit',
+    kpiPendingLbl:'Pending',kpiPendingDelta:'Awaiting field verification',kpiVerifiedLbl:'Verified',kpiVerifiedDelta:'Field verified and approved',kpiRejectedLbl:'Rejected',kpiRejectedDelta:'Current session only',kpiCertLbl:'Certificates Issued',kpiCertDelta:'Generated after approval',
+    recentApps:'Recent Applications',recentAppsSub:'New citizen applications appear here automatically',btnExportCSV:'Export CSV',btnRefresh:'Refresh',
+    thRegNo:'Registration No.',thApplicant:'Applicant',thInstrument:'Instrument',thCategory:'Category',thManufacturer:'Manufacturer',thSerial:'Serial No.',thStatus:'Status',thSubmitted:'Submitted'
+  },
+  hi:{
+    topGoi:'भारत सरकार  |  डिजिटल इंडिया',skip:'मुख्य सामग्री पर जाएं',brandTitle:'भारत सरकार',brandSub:'तौल एवं माप उपकरणों के लिए ऑनलाइन सत्यापन प्रणाली',navHome:'होम',navServices:'सेवाएं',navVerify:'सत्यापन करें',navTrack:'आवेदन ट्रैक करें',navHelp:'सहायता',officerBtn:'फील्ड अधिकारी पोर्टल',heroEyebrow:'डिजिटल गवर्नेंस • प्रोटोटाइप',heroTitle:'तौल एवं माप उपकरणों का डिजिटल सत्यापन',heroSub:'उपकरणों के पंजीकरण, सत्यापन और प्रमाणन के लिए एक सुरक्षित और पारदर्शी डिजिटल प्लेटफ़ॉर्म।',btnRegister:'उपकरण पंजीकृत करें →',btnVerify:'प्रमाणपत्र सत्यापित करें',btnScan:'⌁ QR स्कैन करें',btnTrack:'आवेदन ट्रैक करें',heroDemo:'प्रोटोटाइप / डेमो प्रणाली · कोई वास्तविक पहचान या आधिकारिक प्रमाणपत्र डेटा एकत्र नहीं किया जाता।',
+    noticeImportant:'महत्वपूर्ण:',noticeText:'यह स्मार्ट इंडिया हैकाथॉन के लिए एक प्रोटोटाइप/डेमो प्रणाली है और यह कोई आधिकारिक भारत सरकार वेबसाइट नहीं है।',
+    svcEyebrow:'सेवाएं',svcTitle:'एक प्लेटफ़ॉर्म। हर सत्यापन चरण।',svcSub:'नागरिकों, निर्माताओं, सत्यापन अधिकारियों और सार्वजनिक सत्यापन यात्रा के लिए डिज़ाइन किया गया।',
+    svc1Title:'उपकरण पंजीकृत करें',svc1Body:'निर्देशित डिजिटल आवेदन के माध्यम से आवेदक, उपकरण और सहायक जानकारी जमा करें।',
+    svc2Title:'उपकरण सत्यापित करें',svc2Body:'पंजीकरण या प्रमाणपत्र संख्या जांचें और उपयुक्त सार्वजनिक सत्यापन विवरण देखें।',
+    svc3Title:'आवेदन ट्रैक करें',svc3Body:'सबमिशन से लेकर अधिकारी समीक्षा और प्रमाणपत्र जारी होने तक आवेदन की प्रगति देखें।',
+    svc4Title:'प्रमाणपत्र सत्यापन',svc4Body:'डिजिटल रूप से जारी डेमो प्रमाणपत्र की प्रामाणिकता और स्थिति सत्यापित करें।',
+    svc5Title:'QR सत्यापन',svc5Body:'सत्यापित उपकरण के QR को स्कैन करें और तुरंत उसकी सार्वजनिक प्रामाणिकता व उपकरण विवरण देखें।',svc5Btn:'QR स्कैनर खोलें →',
+    svc6Title:'प्रमाणपत्र जारी करना',svc6Body:'प्रमाणपत्र केवल सफल क्षेत्रीय सत्यापन और अधिकारी अनुमोदन के बाद ही उपलब्ध होता है। प्रत्यक्ष प्रमाणपत्र अपलोड या जारी करने की अनुमति नहीं है।',
+    statSystem:'सिस्टम स्थिति',statOperational:'सक्रिय',statDatabase:'डेटाबेस',statConnected:'कनेक्टेड',statVerifyService:'सत्यापन सेवा',statOperational2:'सक्रिय',statLastUpdated:'अंतिम अद्यतन',statDemoNote:'प्रोटोटाइप के लिए डेमो स्थिति दिखाई गई है। उत्पादन परिनियोजन में यह स्थिति लाइव सेवाओं से प्राप्त होनी चाहिए।',
+    howEyebrow:'यह कैसे काम करता है',howTitle:'पंजीकरण से विश्वसनीय सत्यापन तक।',
+    how1Title:'पंजीकरण',how1Body:'आवेदक आवेदन शुरू करता है।',
+    how2Title:'उपकरण विवरण',how2Body:'मॉडल, सीरियल और क्षमता दर्ज करें।',
+    how3Title:'दस्तावेज़ प्रस्तुतीकरण',how3Body:'सहायक दस्तावेज़ अपलोड करें।',
+    how4Title:'शुल्क एवं भुगतान',how4Body:'लागू सरकारी सत्यापन शुल्क का भुगतान करें।',
+    how5Title:'अधिकारी सत्यापन',how5Body:'रिकॉर्ड की समीक्षा और सत्यापन करें।',
+    how6Title:'प्रमाणपत्र जारी',how6Body:'एक डिजिटल प्रमाणपत्र जनरेट करें।',
+    how7Title:'QR सत्यापन',how7Body:'सार्वजनिक प्रामाणिकता जांच।',
+    verEyebrow:'सार्वजनिक सत्यापन',verTitle:'एक उपकरण सत्यापित करें',verSub:'पंजीकरण या प्रमाणपत्र संख्या दर्ज करें। केवल उपयुक्त सार्वजनिक जानकारी दिखाई जाती है।',verInputPh:'उदा. WMS-2026-00001',verBtn:'सत्यापित करें',verScanBtn:'⌁ QR कोड स्कैन करें',verScanHelp:'सत्यापित उपकरण या प्रमाणपत्र पर छपे QR पर अपना कैमरा रखें।',
+    verPrinciples:'सार्वजनिक सत्यापन सिद्धांत',verP1:'व्यक्तिगत जानकारी',verP1v:'सुरक्षित',verP2:'QR डेटा',verP2v:'केवल संदर्भ',verP3:'सत्यापन',verP3v:'सर्वर-समर्थित',verP4:'प्रमाणपत्र स्थिति',verP4v:'लाइव रिकॉर्ड',
+    ftBrand:'ऑनलाइन सत्यापन प्रणाली',ftBrandBody:'पंजीकरण, क्षेत्रीय सत्यापन और QR-आधारित सार्वजनिक सत्यापन के लिए एक प्रोटोटाइप ई-गवर्नेंस अनुभव।',ftPrototype:'प्रोटोटाइप / डेमो प्रणाली',
+    ftServices:'सेवाएं',ftS1:'उपकरण पंजीकृत करें',ftS2:'उपकरण सत्यापित करें',ftS3:'QR सत्यापन',ftS4:'आवेदन ट्रैक करें',
+    ftInfo:'जानकारी',ftI1:'परिचय',ftI2:'सहायता',ftI3:'संपर्क करें',ftI4:'गोपनीयता',
+    ftOfficer:'फील्ड अधिकारी',ftO1:'फील्ड अधिकारी पोर्टल',ftO2:'क्षेत्रीय सत्यापन',ftO3:'होम',ftO4:'साइटमैप',
+    ftBottom:'प्रोटोटाइप / डेमो प्रणाली · यह कोई आधिकारिक भारत सरकार वेबसाइट नहीं है · SIH डेमो हेतु निर्मित',
+    regTitle:'उपकरण पंजीकृत करें',sf1:'01 आवेदक',sf2:'02 उपकरण',sf3:'03 दस्तावेज़',sf4:'04 शुल्क एवं भुगतान',sf5:'05 घोषणा',sf6:'06 सबमिट',
+    lblName:'आवेदक का नाम',phName:'आवेदक का पूरा नाम',lblMobile:'मोबाइल नंबर',lblEmail:'ईमेल',lblApplicantType:'आवेदक प्रकार',optSelectType:'आवेदक प्रकार चुनें',optBusiness:'व्यवसाय / संगठन',optIndividual:'व्यक्तिगत',optManufacturer:'निर्माता',
+    lblAddress:'पता',phAddress:'पंजीकृत पता',lblState:'राज्य',optSelectState:'राज्य चुनें',lblDistrict:'जिला',optSelectStateFirst:'पहले राज्य चुनें',
+    lblIdentity:'पहचान सत्यापन संदर्भ',noteIdentity:'डेमो पहचान सत्यापन। कृपया वास्तविक आधार जानकारी दर्ज न करें।',
+    btnCancel:'रद्द करें',btnContinue:'जारी रखें →',btnBack:'← वापस',
+    lblInstrument:'उपकरण का नाम',lblCategory:'श्रेणी',optSelectCategory:'श्रेणी चुनें',catWeighing:'तौल उपकरण',catMeasuring:'माप उपकरण',catRetail:'खुदरा तराज़ू',catIndustrial:'औद्योगिक तराज़ू',
+    lblManufacturer:'निर्माता',lblModel:'मॉडल नंबर',lblSerial:'सीरियल नंबर',lblManufacturingDate:'निर्माण तिथि',lblPurchaseDate:'खरीद तिथि',lblCapacity:'क्षमता',
+    lblAccuracy:'सटीकता वर्ग',optSelectAccuracy:'सटीकता वर्ग चुनें',lblUnit:'इकाई',optSelectUnit:'इकाई चुनें',lblDescription:'विवरण',
+    uploadTitle:'दस्तावेज़ यहां खींचें और छोड़ें',uploadTypes:'चालान · निर्माता प्रमाणपत्र · उपकरण फोटो · सहायक दस्तावेज़',btnChooseDocs:'दस्तावेज़ चुनें',btnDemoFiles:'डेमो फ़ाइलें उपयोग करें',
+    feeAdvisoryNote:'नीचे दिखाया गया शुल्क विधिक माप विज्ञान (सामान्य) नियम, 2011 (द्वितीय अनुसूची) की शुल्क सलाह के अनुसार सांकेतिक है। प्रत्येक उपकरण श्रेणी पर अलग सत्यापन/मुद्रांकन शुल्क लागू होता है; आपके राज्य विधिक माप विज्ञान प्राधिकरण द्वारा अधिसूचित सटीक दर भिन्न हो सकती है।',
+    lblPaymentMethod:'भुगतान विधि चुनें',payCard:'💳 डेबिट / क्रेडिट कार्ड',payUPI:'📲 UPI',payNetBanking:'🏦 नेट बैंकिंग',lblUpiId:'आपकी UPI ID',phUpiId:'yourname@upi',noteUpiRedirect:'प्रोटोटाइप: "अभी भुगतान करें" पर क्लिक करते ही आपको भुगतान पूरा करने के लिए आपके UPI ऐप / बैंक खाते पर रीडायरेक्ट किया जाएगा।',btnPayNow:'अभी भुगतान करें →',
+    preCheckTitle:'✓ पूर्व-सबमिशन सत्यापन सफल',preCheckBody:'आवश्यक फ़ील्ड मौजूद हैं। इस प्रोटोटाइप के लिए डुप्लिकेट सीरियल जांच सिम्युलेट की गई है।',declText:'घोषणा: मैं पुष्टि करता/करती हूं कि इस प्रोटोटाइप आवेदन में दी गई जानकारी केवल प्रदर्शन उद्देश्यों के लिए है।',declAgree:'मैं डेमो घोषणा से सहमत हूं।',btnSubmit:'आवेदन सबमिट करें',
+    succEyebrow:'सबमिशन पूर्ण',succTitle:'आवेदन सफलतापूर्वक सबमिट किया गया',succSub:'आपका प्रोटोटाइप आवेदन अधिकारी सत्यापन वर्कफ़्लो में प्रवेश कर चुका है।',succRegNo:'पंजीकरण संख्या',btnViewApp:'आवेदन देखें',btnDownloadAck:'पावती डाउनलोड करें',btnTrackApp:'आवेदन ट्रैक करें',
+    loginTitle:'फील्ड अधिकारी लॉगिन',loginSubtitle:'सुरक्षित फील्ड अधिकारी प्रमाणीकरण',loginAuthOnly:'केवल अधिकृत अधिकारी',lblOfficialEmail:'आधिकारिक ईमेल पता',phOfficerEmail:'अधिकारी ईमेल दर्ज करें',lblPassword:'पासवर्ड',phPassword:'पासवर्ड दर्ज करें',loginDemoCreds:'डेमो क्रेडेंशियल',loginDemoNote:'केवल SIH प्रदर्शन के लिए। उत्पादन परिनियोजन में सुरक्षित सर्वर-साइड प्रमाणीकरण का उपयोग होना चाहिए।',btnAuthenticate:'प्रमाणित करें और पोर्टल खोलें →',
+    trackTitle:'आवेदन ट्रैक करें',lblRegOrApp:'पंजीकरण / आवेदन संख्या',btnTrackShort:'ट्रैक करें',
+    qriEyebrow:'सार्वजनिक QR सत्यापन',qriTitle:'स्कैन करने से पहले',qriSafe:'सुरक्षित रूप से स्कैन करें। तुरंत सत्यापित करें।',qriSafeBody:'QR को WMS सत्यापन संदर्भ खोलना चाहिए। QR कोड के माध्यम से कभी भी निजी आवेदक जानकारी साझा न करें।',
+    qri1Title:'कैमरा एक्सेस की अनुमति दें',qri1Body:'"कैमरा शुरू करें" पर टैप करें और प्रॉम्प्ट मिलने पर अपने ब्राउज़र को कैमरा उपयोग करने दें।',
+    qri2Title:'QR को फ्रेम के अंदर रखें',qri2Body:'QR को सपाट, अच्छी रोशनी में और केंद्र में रखें। फोन को कुछ देर स्थिर रखें।',
+    qri3Title:'सत्यापित रिकॉर्ड देखें',qri3Body:'पहचान के बाद, सिस्टम केवल सार्वजनिक उपकरण और प्रमाणपत्र जानकारी दिखाता है।',
+    qriTipLabel:'डेमो टिप:',qriTipBody:'यदि इस डिवाइस पर कैमरा स्कैनिंग उपलब्ध नहीं है, तो पूर्ण सत्यापन प्रवाह अनुभव करने के लिए डेमो स्कैन बटन का उपयोग करें।',
+    btnStartScanner:'QR स्कैनर शुरू करें →',btnDemoQR:'डेमो QR उपयोग करें',
+    offBrandSub:'फील्ड अधिकारी संचालन पोर्टल',offHome:'⌂ होम',offServices:'▤ सेवाएं',offApplications:'▦ आवेदन',offVerification:'✓ सत्यापन',offCertificates:'▣ प्रमाणपत्र',offQR:'⌁ QR सत्यापन',offReports:'◫ रिपोर्ट',offAudit:'≡ ऑडिट लॉग',offCitizenPortal:'← नागरिक पोर्टल',offLogout:'लॉगआउट',
+    offConsole:'फील्ड अधिकारी कंसोल',offDashTitle:'क्षेत्रीय सत्यापन डैशबोर्ड',offDashSub:'वर्तमान नागरिक सत्र से लाइव आवेदन',offRoleTitle:'क्षेत्रीय सत्यापन अधिकारी',offRoleSub:'डेमो अधिकारी · दिल्ली फील्ड यूनिट',
+    kpiPendingLbl:'लंबित',kpiPendingDelta:'क्षेत्रीय सत्यापन की प्रतीक्षा में',kpiVerifiedLbl:'सत्यापित',kpiVerifiedDelta:'क्षेत्रीय रूप से सत्यापित और अनुमोदित',kpiRejectedLbl:'अस्वीकृत',kpiRejectedDelta:'केवल वर्तमान सत्र',kpiCertLbl:'जारी प्रमाणपत्र',kpiCertDelta:'अनुमोदन के बाद जनरेट किया गया',
+    recentApps:'हाल के आवेदन',recentAppsSub:'नए नागरिक आवेदन यहां स्वतः दिखाई देंगे',btnExportCSV:'CSV निर्यात करें',btnRefresh:'रीफ्रेश करें',
+    thRegNo:'पंजीकरण संख्या',thApplicant:'आवेदक',thInstrument:'उपकरण',thCategory:'श्रेणी',thManufacturer:'निर्माता',thSerial:'सीरियल संख्या',thStatus:'स्थिति',thSubmitted:'जमा किया गया'
+  }
+};
+let currentSiteLang='en';
+function applyLanguage(lang){
+  const dict=i18nDict[lang]||i18nDict.en;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    if(dict[key]!==undefined) el.textContent=dict[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    const key=el.getAttribute('data-i18n-ph');
+    if(dict[key]!==undefined) el.setAttribute('placeholder',dict[key]);
+  });
+  document.documentElement.lang=lang==='hi'?'hi':'en';
+  currentSiteLang=lang;
+  if($('#registerModal')?.classList.contains('show')) updateFeeSummary();
+  const btn=$('#langDDBtn');
+  if(btn) btn.textContent=(lang==='hi'?'हिंदी':'EN')+' ▾';
+  document.querySelectorAll('#langDDMenu button').forEach(b=>b.classList.remove('active'));
+  const activeBtn=document.querySelector('#langDDMenu .lang-'+lang);
+  if(activeBtn) activeBtn.classList.add('active');
+  currentSiteLang=lang;
+}
+function closeLangMenu(){
+  const menu=$('#langDDMenu');if(menu) menu.classList.remove('show');
+  const btn=$('#langDDBtn');if(btn) btn.setAttribute('aria-expanded','false');
+}
+function toggleLangMenu(e){
+  e.stopPropagation();
+  const menu=$('#langDDMenu'),btn=$('#langDDBtn');
+  if(!menu||!btn) return;
+  const willShow=!menu.classList.contains('show');
+  menu.classList.toggle('show',willShow);
+  btn.setAttribute('aria-expanded',willShow?'true':'false');
+}
+function setLanguage(lang){
+  applyLanguage(lang);
+  closeLangMenu();
+  toast(lang==='hi'?'भाषा हिंदी में बदली गई (डेमो)':'Language switched to English (demo)');
+}
+document.addEventListener('click',(e)=>{
+  const dd=$('#langDD');
+  if(dd&&!dd.contains(e.target)) closeLangMenu();
+});
+function skipToMain(e){
+  if(e) e.preventDefault();
+  const main=document.getElementById('citizenApp');
+  if(main){ main.focus({preventScroll:false}); main.scrollIntoView({behavior:'smooth',block:'start'}); }
+  return false;
+}
+document.addEventListener('DOMContentLoaded',()=>applyLanguage('en'));
+
+</script>
+
+<!-- NEW: Legal Metrology / eMaap extension. Existing flows remain untouched. -->
+<button class="lm-tools-btn" id="lmToolsBtn" onclick="openLMTools()">⚖ Legal Metrology / eMaap</button>
+<div class="modal" id="lmToolsModal"><div class="modal-card" style="max-width:1000px"><div class="modal-head"><div><div class="eyebrow">SIH Prototype Extension</div><h3>Legal Metrology / eMaap Tools</h3></div><button class="close" onclick="closeModal('lmToolsModal')">×</button></div><div class="modal-body">
+<div class="lm-grid">
+<div class="lm-card"><h4>MPE Reference & Auto-Check</h4><p>Reference examples from the implementation brief. Initial vs in-service toggle; in-service uses 2× initial tolerance for this demo.</p><div class="field"><label>Instrument category</label><select id="lmCategory"><option>Fuel Dispenser</option><option>Grocery Scale Class III</option><option>Pre-Packaged Goods</option><option>Other</option></select></div><div class="field" style="margin-top:8px"><label>Test Reading</label><input id="lmReading" type="number" step="any" placeholder="Enter test reading"></div><div class="field" style="margin-top:8px"><label>Reference value</label><input id="lmReference" type="number" step="any" placeholder="Enter nominal value"></div><div class="modal-actions" style="justify-content:flex-start"><button class="btn secondary" onclick="lmSetMode('initial')">Initial MPE</button><button class="btn secondary" onclick="lmSetMode('inservice')">In-Service MPE (2×)</button><button class="btn primary" onclick="runMPECheck()">Check</button></div><div id="lmMpeResult" style="margin-top:8px"></div></div>
+<div class="lm-card"><h4>Verification & Stamping Checklist</h4><p>All six checks should be completed before approval.</p><div class="lm-checks" id="lmChecks"><label class="lm-check"><input type="checkbox"> <span><b>Model Approval Certificate</b><small>Confirm model approval reference.</small></span></label><label class="lm-check"><input type="checkbox"> <span><b>Zero-Setting Test</b><small>Confirm instrument returns to zero.</small></span></label><label class="lm-check"><input type="checkbox"> <span><b>Linearity / Repeatability Test</b><small>Record repeatability and linearity.</small></span></label><label class="lm-check"><input type="checkbox"> <span><b>Eccentricity / Corner Load Test</b><small>Check corner-load performance.</small></span></label><label class="lm-check"><input type="checkbox"> <span><b>Physical Condition & Environment</b><small>Check installation and condition.</small></span></label><label class="lm-check"><input type="checkbox"> <span><b>Tamper / Seal Integrity</b><small>Confirm seal identification.</small></span></label></div><div class="modal-actions" style="justify-content:flex-start"><button class="btn success" onclick="validateLMChecks()">Validate Checklist</button></div><div id="lmCheckResult" style="margin-top:8px"></div></div>
+<div class="lm-card"><h4>Registration / Re-verification Add-on</h4><p>Additional data fields requested for the Legal Metrology workflow.</p><div class="form-grid"><div class="field"><label>GSTIN</label><input id="lmGSTIN" placeholder="Business GSTIN (demo)"></div><div class="field"><label>Legal Metrology License No.</label><input id="lmLicense" placeholder="Optional / business dependent"></div><div class="field"><label>Central Model Approval No.</label><input id="lmModelApproval" placeholder="Approval reference"></div><div class="field"><label>Scale Interval (e / d)</label><input id="lmScale" placeholder="e.g. e=10g, d=10g"></div><div class="field"><label>Verification Type</label><select id="lmVerificationType"><option>Initial Verification</option><option>Periodic Re-verification</option></select></div><div class="field"><label>Testing Location</label><select id="lmTestingLocation"><option>On-site</option><option>Local Metrology Lab / GATC</option><option>LMO Office</option></select></div><div class="field"><label>Previous Certificate No.</label><input id="lmPrevCert"></div><div class="field"><label>Previous Issue Date</label><input id="lmPrevIssue" type="date"></div><div class="field"><label>Previous Expiry Date</label><input id="lmPrevExpiry" type="date"></div><div class="field"><label>Physical Seal ID</label><input id="lmSealId" placeholder="Seal identification"></div></div><div class="modal-actions" style="justify-content:flex-start"><button class="btn primary" onclick="saveLMAddOn()">Save Demo Data</button></div></div>
+<div class="lm-card"><h4>GPS / Geotagging Simulation</h4><p>Capture the inspection location and display it as inspection geo-proof.</p><div class="lm-geo" id="lmGeo">Not captured.</div><div class="modal-actions" style="justify-content:flex-start"><button class="btn secondary" onclick="captureLMGeo()">⌖ Capture Geotagged Location</button><button class="btn secondary" onclick="autoDetectLMJurisdiction()">Auto-detect Jurisdiction</button></div></div>
+<div class="lm-card"><h4>GATC Information</h4><p>Government Approved Test Centres are part of the Legal Metrology framework for prescribed weights and measures.</p><button class="btn secondary" onclick="openGATCInfo()">View GATC Details →</button></div>
+<div class="lm-card"><h4>Renewal / Re-verification</h4><p>Start a renewal application without changing the existing registration flow.</p><button class="btn primary" onclick="closeModal('lmToolsModal');openRenewalLM()">Apply for Renewal →</button></div>
+<div class="lm-card"><h4>Enforcement & Seizure</h4><p>Demo records for unverified/tampered instruments.</p><table class="lm-table"><thead><tr><th>Instrument</th><th>Location</th><th>Status</th></tr></thead><tbody><tr><td>Electronic Scale</td><td>Delhi</td><td><span class="pill red">Seized</span></td></tr><tr><td>Retail Scale</td><td>Central Delhi</td><td><span class="pill orange">Compounded</span></td></tr><tr><td>Fuel Dispenser</td><td>South Delhi</td><td><span class="pill green">Prosecuted</span></td></tr></tbody></table></div>
+<div class="lm-card"><h4>Offence Reference</h4><p>Sections 25, 26, 32, 33, 40 and 44 are surfaced as officer-reference points. Current Act/amendments and State rules should be checked for exact penalty/compounding values.</p><button class="btn secondary" onclick="openPenaltyLM()">Open Reference →</button></div>
+</div>
+<div class="gov-notice" style="margin-top:14px"><b>Official framework:</b> Department of Consumer Affairs / Legal Metrology; State Legal Metrology authorities; GATC framework. This is a prototype and does not issue legally valid certificates.</div>
+</div></div></div>
+<div class="modal" id="gatcInfoLM"><div class="modal-card" style="max-width:760px"><div class="modal-head"><h3>Government Approved Test Centres (GATC)</h3><button class="close" onclick="closeModal('gatcInfoLM')">×</button></div><div class="modal-body"><div class="gov-notice">GATCs are approved under the Legal Metrology (Government Approved Test Centre) Rules for verification of prescribed weights and measures, alongside State Government verification.</div><table class="lm-table" style="margin-top:14px"><thead><tr><th>Instrument examples</th><th>GATC framework</th></tr></thead><tbody><tr><td>Water meter</td><td>Covered</td></tr><tr><td>Sphygmomanometer</td><td>Covered</td></tr><tr><td>Clinical thermometer</td><td>Covered</td></tr><tr><td>Automatic rail weighbridge</td><td>Covered</td></tr><tr><td>Tape measure</td><td>Covered</td></tr><tr><td>Non-automatic weighing instruments Class III/IIII up to 150 kg</td><td>Covered</td></tr><tr><td>Load cell, beam scale, counter machine, weights</td><td>Covered</td></tr></tbody></table><p class="lm-muted" style="margin-top:10px">GATC scope can change through amendments. Production implementation should use the current Department of Consumer Affairs rules.</p></div></div></div>
+<div class="modal" id="penaltyLM"><div class="modal-card" style="max-width:700px"><div class="modal-head"><h3>Legal Metrology Offence Reference</h3><button class="close" onclick="closeModal('penaltyLM')">×</button></div><div class="modal-body"><div class="gov-notice">For sections 25, 26, 32, 33, 40 and 44, the prototype stores the section reference but intentionally does not hard-code penalty amounts because the supplied research PDF was not attached and current amendments can change the applicable amounts.</div><table class="lm-table" style="margin-top:14px"><thead><tr><th>Section</th><th>Prototype use</th></tr></thead><tbody><tr><td>25</td><td>Offence reference / evidence</td></tr><tr><td>26</td><td>Offence reference / evidence</td></tr><tr><td>32</td><td>Offence reference / evidence</td></tr><tr><td>33</td><td>Offence reference / evidence</td></tr><tr><td>40</td><td>Offence reference / evidence</td></tr><tr><td>44</td><td>Offence reference / evidence</td></tr></tbody></table></div></div></div>
+<div class="modal" id="renewalLM"><div class="modal-card"><div class="modal-head"><h3>Apply for Renewal / Re-verification</h3><button class="close" onclick="closeModal('renewalLM')">×</button></div><div class="modal-body"><div class="form-grid"><div class="field"><label>Existing Certificate Number</label><input id="rCert" placeholder="WMS-CERT-2026-00001"></div><div class="field"><label>Previous Verification Date</label><input id="rDate" type="date"></div><div class="field"><label>Previous Expiry Date</label><input id="rExpiry" type="date"></div><div class="field"><label>Issuing Authority</label><input id="rAuthority" placeholder="State Legal Metrology / LMO"></div><div class="field span2"><label>Updated Business Details</label><input id="rBusiness" placeholder="Updated details"></div><div class="field"><label>Instrument Serial / Model Approval</label><input id="rInstrument" placeholder="Serial / model approval"></div><div class="field"><label>Repairer License No. (if applicable)</label><input id="rRepairer"></div><div class="field span2"><label>Current Condition Declaration</label><textarea id="rCondition" rows="2" placeholder="Current physical condition"></textarea></div><div class="field"><label>Repair / Seal-break Details</label><input id="rRepair"></div><div class="field"><label>Site Preference</label><select id="rSite"><option>On-site</option><option>Local Metrology Lab / GATC</option><option>LMO Office</option></select></div><div class="field span2"><label>Documents</label><input id="rDocs" type="file" multiple accept=".pdf,.jpg,.jpeg,.png"></div></div><div class="modal-actions"><button class="btn secondary" onclick="closeModal('renewalLM')">Cancel</button><button class="btn primary" onclick="submitRenewalLM()">Submit Renewal →</button></div></div></div></div>
+
+<script id="legal-metrology-extension-js">
+(function(){
+  let lmMode='initial';
+  window.openLMTools=function(){openModal('lmToolsModal')};
+  window.openGATCInfo=function(){openModal('gatcInfoLM')};
+  window.openPenaltyLM=function(){openModal('penaltyLM')};
+  window.openRenewalLM=function(){openModal('renewalLM')};
+  window.lmSetMode=function(mode){lmMode=mode;toast(mode==='initial'?'Initial MPE selected':'In-Service MPE selected: 2× initial tolerance')};
+  window.runMPECheck=function(){
+    const cat=($('#lmCategory')||{}).value||'Other', reading=parseFloat(($('#lmReading')||{}).value), ref=parseFloat(($('#lmReference')||{}).value);
+    if(!Number.isFinite(reading)||!Number.isFinite(ref)){if($('#lmMpeResult'))$('#lmMpeResult').innerHTML='<span class="pill orange">Enter reading and reference value</span>';return}
+    let tol=cat==='Fuel Dispenser'?0.5:cat==='Pre-Packaged Goods'?3:1.5; if(lmMode==='inservice')tol*=2;
+    const low=ref*(1-tol/100),high=ref*(1+tol/100),pass=reading>=low&&reading<=high;
+    $('#lmMpeResult').innerHTML=pass?`<span class="lm-pass">PASS · Within ±${tol}% MPE</span>`:`<span class="lm-fail">FAIL · Outside ±${tol}% MPE</span>`;
+  };
+  window.validateLMChecks=function(){const all=[...document.querySelectorAll('#lmChecks input')].every(x=>x.checked);$('#lmCheckResult').innerHTML=all?'<span class="lm-pass">✓ All verification checks complete</span>':'<span class="lm-fail">Complete all six checks before approval</span>'};
+  window.saveLMAddOn=function(){const d={gstin:$('#lmGSTIN').value,license:$('#lmLicense').value,modelApproval:$('#lmModelApproval').value,scale:$('#lmScale').value,verificationType:$('#lmVerificationType').value,testingLocation:$('#lmTestingLocation').value,previousCert:$('#lmPrevCert').value,previousIssue:$('#lmPrevIssue').value,previousExpiry:$('#lmPrevExpiry').value,sealId:$('#lmSealId').value};localStorage.setItem('wmsLMAddon',JSON.stringify(d));toast('Legal Metrology add-on data saved for this demo device')};
+  window.captureLMGeo=function(){const show=(lat,lng)=>{$('#lmGeo').innerHTML=`<b>Inspection Geo-Proof captured</b><br>Latitude: ${Number(lat).toFixed(6)} · Longitude: ${Number(lng).toFixed(6)}<br><span class="lm-muted">${typeof nowStamp==='function'?nowStamp():new Date().toLocaleString()}</span>`}; if(navigator.geolocation)navigator.geolocation.getCurrentPosition(p=>show(p.coords.latitude,p.coords.longitude),()=>show(28.6139,77.2090),{enableHighAccuracy:true,timeout:5000});else show(28.6139,77.2090)};
+  window.autoDetectLMJurisdiction=function(){toast('Demo jurisdiction auto-allocation: Delhi')};
+  window.submitRenewalLM=function(){const cert=$('#rCert').value.trim(),cond=$('#rCondition').value.trim();if(!cert||cond.length<5){toast('Enter certificate number and condition declaration');return}const apps=typeof getApps==='function'?getApps():[];const id=typeof nextRegistration==='function'?nextRegistration():'WMS-RENEW-'+Date.now();const stamp=typeof nowStamp==='function'?nowStamp():new Date().toLocaleString();apps.push({id,applicationType:'Renewal',applicantName:$('#rBusiness').value.trim()||'Renewal Applicant',instrumentName:'Renewal / Re-verification',category:'Re-verification',serial:$('#rInstrument').value.trim(),status:'Pending Field Verification',fieldOfficer:'Unassigned',submitted:stamp,verificationDate:'',certificateNumber:'',timeline:[{label:'Renewal Application Submitted',time:stamp,done:true},{label:'Field Verification',time:'Awaiting officer assignment',done:false},{label:'Officer Approval',time:'Pending field verification',done:false},{label:'Certificate Issued',time:'Available only after approval',done:false}]});if(typeof saveApps==='function')saveApps(apps);closeModal('renewalLM');toast('Renewal application added to officer queue');if(typeof renderApplications==='function')renderApplications()};
+  document.addEventListener('DOMContentLoaded',function(){
+    const dash=document.querySelector('#dashboard');
+    if(dash){const nav=dash.querySelector('.officer-menu');if(nav&&!nav.querySelector('.lm-nav-btn')){const b=document.createElement('button');b.className='officer-menu-btn lm-nav-btn';b.textContent='⚖ LM / eMaap Tools';b.onclick=openLMTools;nav.appendChild(b)}}
+  });
+})();
+</script>
+</body></html>
